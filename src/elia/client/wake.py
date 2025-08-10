@@ -18,7 +18,6 @@ porcupine = pvporcupine.create(
     access_key=ACCESS_KEY,
     keyword_paths=[KEYWORD_PATH],
     model_path=Config.PICOVOICE_PARAMS,
-    sensitivities=[0.65],
 )
 rec = PvRecorder(device_index=Config.AUDIO_DEVICE_INDEX, frame_length=porcupine.frame_length)
 
