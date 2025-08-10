@@ -40,4 +40,4 @@ def transcribe_endpoint():
         return jsonify(success=False, error=str(e)), 500
     finally:
         try: os.remove(tmp.name)
-        except: pass
+        except OSError: pass
