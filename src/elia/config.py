@@ -9,3 +9,4 @@ class Config:
     PICOVOICE_KEY = os.getenv("PICOVOICE_KEY")
     PICOVOICE_WORD = os.getenv("PICOVOICE_WORD")
     PICOVOICE_PARAMS = os.getenv("PICOVOICE_PARAMS")
+    AUDIO_DEVICE_INDEX = int(os.getenv("AUDIO_DEVICE_INDEX", 0))
