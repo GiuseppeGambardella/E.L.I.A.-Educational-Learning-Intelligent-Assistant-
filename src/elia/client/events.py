@@ -3,8 +3,6 @@ from elia.client.EventEmitter import EventEmitter
 from elia.client.recorder import record_until_silence
 import io
 from elia.config import Config
-import requests
-
 event_emitter = EventEmitter()
 
 def on_wake_word_detected(**kwargs):
