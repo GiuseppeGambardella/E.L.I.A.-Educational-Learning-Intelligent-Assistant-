@@ -1,12 +1,6 @@
 import os
 import warnings
 
-# Disabilita warnings prima di qualsiasi import
-os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
-os.environ['PYTHONWARNINGS'] = 'ignore'
-warnings.filterwarnings("ignore")
-
-
 from elia.server import create_app
 app = create_app()
 
