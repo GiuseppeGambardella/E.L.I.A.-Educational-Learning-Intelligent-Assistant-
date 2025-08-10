@@ -1,7 +1,4 @@
 # EventEmitter minimale, thread-safe "quanto basta" per callbacks veloci.
-from collections import defaultdict
-from typing import Callable, Dict, List, Any
-import traceback
 import datetime
 
 class EventEmitter:
