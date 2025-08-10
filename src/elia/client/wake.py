@@ -28,7 +28,7 @@ try:
     while True:
         pcm = rec.read()
         if porcupine.process(pcm) >= 0:
-            event_emitter.emit("wake_word_detected")
+            event_emitter.emit(event_emitter.WORD_DETECTED)
 except KeyboardInterrupt:
     pass
 finally:

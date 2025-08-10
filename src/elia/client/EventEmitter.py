@@ -5,6 +5,10 @@ import traceback
 import datetime
 
 class EventEmitter:
+
+    WORD_DETECTED = "wake_word_detected"
+
+
     def __init__(self, log_file="src/elia/client/events.log"):
         self._events = {}
         self._log_file = log_file  # percorso file log, es. "events.log"
