@@ -1,10 +1,11 @@
 # trascrizione con faster-whisper (italiano)
 from faster_whisper import WhisperModel
 from elia.config import Config
-
+import torch
+device = "cuda" if torch.cuda.is_available() else "cpu"
 _model = WhisperModel(
     Config.WHISPER_MODEL or "small",
-    device="cuda",
+    device=device,
     compute_type="auto"
 )
 
