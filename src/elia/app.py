@@ -1,6 +1,9 @@
 import os
 import warnings
 
+# Disabilita warnings prima di qualsiasi import
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
+
 from elia.server import create_app
 app = create_app()
 
