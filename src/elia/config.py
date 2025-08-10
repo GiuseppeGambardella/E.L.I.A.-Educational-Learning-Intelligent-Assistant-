@@ -2,6 +2,8 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
+print("Loading configuration from environment variables...")
+
 class Config:
     ENV = os.getenv("FLASK_ENV", "production")
     DEBUG = ENV == "development"

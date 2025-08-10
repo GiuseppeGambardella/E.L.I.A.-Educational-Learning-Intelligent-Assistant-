@@ -2,10 +2,9 @@ from flask import Blueprint, request, jsonify, current_app
 import tempfile, os, datetime
 from elia.server.services.asr import transcribe_wav
 
-# Disabilita warnings prima di qualsiasi import
-os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
-
 bp = Blueprint("transcribe", __name__)
+
+print("Transcribe blueprint initialized")
 
 def _transcripts_dir() -> str:
     # cartella configurabile via ENV/Config, fallback a "data/transcripts"
