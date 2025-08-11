@@ -205,3 +205,19 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Modelli addestrati (artefatti grandi)
+src/elia/server/models/nlp_model/
+src/elia/server/models/**/best/
+src/elia/server/models/**/model-best/
+src/elia/server/models/**/model-last/
+
+# File binari pesanti comuni
+*.spacy
+*.bin
+*.pt
+*.pth
+*.onnx
+
+# Mantieni codice/dati sotto src/elia/models (non ignorare)
+!src/elia/models/nlp/
