@@ -1,16 +1,13 @@
 from flask import Blueprint, request, jsonify, current_app
 import tempfile, os, datetime
 from elia.server.services.asr import transcribe_wav
+from elia.config import Config
 
 bp = Blueprint("transcribe", __name__)
 
-print("Transcribe blueprint initialized")
+cartella_transcripts = "data/transcripts"
 
-def _transcripts_dir() -> str:
-    # cartella configurabile via ENV/Config, fallback a "data/transcripts"
-    base = getattr(current_app.config, "TRANSCRIPTS_DIR", None) or "data/transcripts"
-    os.makedirs(base, exist_ok=True)
-    return base
+print("Transcribe blueprint initialized")
 
 @bp.post("/transcribe")
 def transcribe_endpoint():
@@ -24,19 +21,37 @@ def transcribe_endpoint():
     tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
     f.save(tmp.name)
     try:
-        res = transcribe_wav(tmp.name)   # {"text":..., "duration":...}
-        text, duration = res.get("text", ""), res.get("duration")
+        # transcribe_wav deve restituire anche "confidence"
+        res = transcribe_wav(tmp.name)
+        duration = res.get("duration")
+        confidence = res.get("confidence")
 
-        # salva SOLO lato server
+        # salva su file lato server
         ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        out_dir = _transcripts_dir()
-        out_path = os.path.join(out_dir, f"{ts}.txt")
-        with open(out_path, "w", encoding="utf-8") as out:
-            out.write(text.strip() + "\n")
 
-        return jsonify(success=True, id=ts, duration=duration)
+        # decide cosa tornare al client
+        if confidence is not None and confidence < Config.ASR_CONF_THRESHOLD:
+            return jsonify(
+                success=True,
+                status="clarify",
+                id=ts,
+                duration=duration,
+                confidence=round(confidence, 3),
+                message="Non sono sicuro di aver capito perfettamente. Puoi ripetere? Dal server"
+            ), 200
+
+        return jsonify(
+            success=True,
+            status="ok",
+            id=ts,
+            duration=duration,
+            confidence=None if confidence is None else round(confidence, 3),
+        ), 200
+
     except Exception as e:
         return jsonify(success=False, error=str(e)), 500
     finally:
-        try: os.remove(tmp.name)
-        except OSError: pass
+        try:
+            os.remove(tmp.name)
+        except OSError:
+            pass
