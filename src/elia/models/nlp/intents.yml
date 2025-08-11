@@ -1,0 +1,668 @@
+# Dataset stile "studente" arricchito con frasi piu complesse, emozioni variegate,
+# subordinate, connettivi, sfumature di difficolta e richieste multi‑intent articolate.
+# Tono colloquiale, minuscole, niente accenti (coerenza con versione precedente).
+
+labels:
+  - ask_explanation
+  - ask_definition
+  - ask_example
+  - request_summary
+  - ask_steps
+  - ask_compare
+  - ask_simplify
+  - express_emotion
+  - express_difficulty
+
+train:
+  # -------- ask_explanation (base + complessi) --------
+  - {text: "mi spieghi perche succede sta roba", cats: {ask_explanation: 1}}
+  - {text: "non ho capito la logica dietro puoi spiegare", cats: {ask_explanation: 1}}
+  - {text: "ma per quale motivo funziona cosi", cats: {ask_explanation: 1}}
+  - {text: "ok ma qual e il senso di tutto cio", cats: {ask_explanation: 1}}
+  - {text: "mi manca il perche me lo chiarisci", cats: {ask_explanation: 1}}
+  - {text: "puoi fare la spiegazione in parole tue", cats: {ask_explanation: 1}}
+  - {text: "boh non vedo il meccanismo spiegamelo", cats: {ask_explanation: 1}}
+  - {text: "che idea c e dietro a sta cosa", cats: {ask_explanation: 1}}
+  - {text: "spiega proprio il concetto non solo la formula", cats: {ask_explanation: 1}}
+  - {text: "mi serve capire il ragionamento", cats: {ask_explanation: 1}}
+  - {text: "perche si fa cosi e non in un altro modo", cats: {ask_explanation: 1}}
+  - {text: "quale e la logica passo base", cats: {ask_explanation: 1}}
+  - {text: "vorrei capire cosa giustifica questo passaggio intermedio", cats: {ask_explanation: 1}}
+  - {text: "spiegami il perche succede proprio dopo quella condizione", cats: {ask_explanation: 1}}
+  - {text: "mi chiarisci cosa cambia mentalmente prima e dopo questa trasformazione", cats: {ask_explanation: 1}}
+  - {text: "non vedo il nesso causale spiegamelo lentamente", cats: {ask_explanation: 1}}
+  - {text: "puoi spiegare che relazione c e tra questi due effetti", cats: {ask_explanation: 1}}
+  - {text: "mi fai capire il perche concettuale oltre la tecnica", cats: {ask_explanation: 1}}
+  - {text: "puoi spiegare meglio questa parte", cats: {ask_explanation: 1}}
+  - {text: "non mi e chiaro sto passaggio", cats: {ask_explanation: 1}}
+  - {text: "mi sfugge il motivo di questo step", cats: {ask_explanation: 1}}
+  - {text: "perche qui facciamo cosi invece di un altra cosa", cats: {ask_explanation: 1}}
+  - {text: "cosa giustifica questo cambio", cats: {ask_explanation: 1}}
+  - {text: "qual e il ragionamento dietro questa scelta", cats: {ask_explanation: 1}}
+  - {text: "non collego le due parti spiegamelo", cats: {ask_explanation: 1}}
+  - {text: "mi racconti il perche di tutta la procedura", cats: {ask_explanation: 1}}
+  - {text: "sto pezzo da dove arriva concettualmente", cats: {ask_explanation: 1}}
+  - {text: "puoi dirmi il perche logico sotto", cats: {ask_explanation: 1}}
+  - {text: "mi sfugge ancora il perche generale", cats: {ask_explanation: 1}}
+  - {text: "ok ma qual e il motivo principale sotto", cats: {ask_explanation: 1}}
+  - {text: "non afferro il ragionamento che collega i pezzi", cats: {ask_explanation: 1}}
+  - {text: "spiega la parte concettuale non solo come farlo", cats: {ask_explanation: 1}}
+  - {text: "vorrei capire il perche prima di memorizzare", cats: {ask_explanation: 1}}
+  - {text: "per quale idea di base si fa questo passaggio", cats: {ask_explanation: 1}}
+  - {text: "cosa causa esattamente quel cambiamento", cats: {ask_explanation: 1}}
+  - {text: "qual e il nesso tra queste due frasi", cats: {ask_explanation: 1}}
+  - {text: "mi chiarisci lo step mentale che fate li", cats: {ask_explanation: 1}}
+  - {text: "perche quello vale sempre", cats: {ask_explanation: 1}}
+  - {text: "spiegami il perche dietro quell assunzione", cats: {ask_explanation: 1}}
+  - {text: "ancora non vedo la catena causa effetto spiegala", cats: {ask_explanation: 1}}
+  - {text: "quale principio generale sostiene questo risultato", cats: {ask_explanation: 1}}
+  - {text: "mi serve il quadro di senso prima dei dettagli", cats: {ask_explanation: 1}}
+  - {text: "spiega la motivazione profonda del metodo", cats: {ask_explanation: 1}}
+  - {text: "perche esattamente scatta questa condizione", cats: {ask_explanation: 1}}
+  - {text: "che legame logico collega queste tre parti", cats: {ask_explanation: 1}}
+  - {text: "mi manca il ponte concettuale fra i due passaggi", cats: {ask_explanation: 1}}
+  - {text: "qual e la giustificazione formale del passaggio", cats: {ask_explanation: 1}}
+  - {text: "indica il meccanismo che rende valido il salto", cats: {ask_explanation: 1}}
+  - {text: "vorrei capire la ragione prima di memorizzare", cats: {ask_explanation: 1}}
+  - {text: "spiega come uno porta logicamente all altro", cats: {ask_explanation: 1}}
+  - {text: "qual e la struttura concettuale retrostante", cats: {ask_explanation: 1}}
+  - {text: "perche questo viene prima di quello", cats: {ask_explanation: 1}}
+  - {text: "chiarisci il nesso funzionale tra gli step", cats: {ask_explanation: 1}}
+  - {text: "che cosa rende necessario questo step", cats: {ask_explanation: 1}}
+
+  # -------- ask_definition --------
+  - {text: "cos e esattamente sto termine", cats: {ask_definition: 1}}
+  - {text: "dammi la definizione secca", cats: {ask_definition: 1}}
+  - {text: "che significa sta parola qui", cats: {ask_definition: 1}}
+  - {text: "mi dici il significato preciso", cats: {ask_definition: 1}}
+  - {text: "serve definizione corta pls", cats: {ask_definition: 1}}
+  - {text: "sto termine che indica", cats: {ask_definition: 1}}
+  - {text: "spiega la definizione standard", cats: {ask_definition: 1}}
+  - {text: "solo definizione niente esempio", cats: {ask_definition: 1}}
+  - {text: "che vuol dire in questo contesto", cats: {ask_definition: 1}}
+  - {text: "qual e la versione formale della definizione", cats: {ask_definition: 1}}
+  - {text: "mi chiarisci cosa indica", cats: {ask_definition: 1}}
+  - {text: "ok definisci il concetto", cats: {ask_definition: 1}}
+  - {text: "definizione ufficiale senza fronzoli grazie", cats: {ask_definition: 1}}
+  - {text: "mi dai la definizione accademica e poi basta", cats: {ask_definition: 1}}
+  - {text: "vorrei la forma piu rigorosa del termine", cats: {ask_definition: 1}}
+  - {text: "cosa intendiamo esattamente con questo", cats: {ask_definition: 1}}
+  - {text: "che cosa vuol dire in modo semplice", cats: {ask_definition: 1}}
+  - {text: "significato preciso di sta parola", cats: {ask_definition: 1}}
+  - {text: "definizione rapida senza dettagli extra", cats: {ask_definition: 1}}
+  - {text: "me la dai in modo formale", cats: {ask_definition: 1}}
+  - {text: "serve capire il significato di base", cats: {ask_definition: 1}}
+  - {text: "termine poco chiaro dammi definizione", cats: {ask_definition: 1}}
+  - {text: "qual e il senso esatto di sta sigla", cats: {ask_definition: 1}}
+  - {text: "definisci sto concetto in modo asciutto", cats: {ask_definition: 1}}
+  - {text: "mi serve la definizione ufficiale breve", cats: {ask_definition: 1}}
+  - {text: "che significa esattamente qui questo termine", cats: {ask_definition: 1}}
+  - {text: "dai definizione formale e basta", cats: {ask_definition: 1}}
+  - {text: "indica proprio cosa vuol dire la parola", cats: {ask_definition: 1}}
+  - {text: "spiega il significato preciso non l uso", cats: {ask_definition: 1}}
+  - {text: "cosa rappresenta questa sigla", cats: {ask_definition: 1}}
+  - {text: "termine ambiguo dammi definizione netta", cats: {ask_definition: 1}}
+  - {text: "voglio la definizione precisa della parola", cats: {ask_definition: 1}}
+  - {text: "definizione concisa ma rigorosa", cats: {ask_definition: 1}}
+  - {text: "riporta solo il significato formale", cats: {ask_definition: 1}}
+  - {text: "dammi il senso tecnico esatto", cats: {ask_definition: 1}}
+  - {text: "serve sapere la definizione accademica", cats: {ask_definition: 1}}
+  - {text: "come viene definito di solito questo concetto", cats: {ask_definition: 1}}
+  - {text: "significato canonico del termine", cats: {ask_definition: 1}}
+  - {text: "termine nuovo definiscilo subito", cats: {ask_definition: 1}}
+  - {text: "puoi fornire puro significato senza altri commenti", cats: {ask_definition: 1}}
+  - {text: "mi serve la definizione base standard", cats: {ask_definition: 1}}
+
+  # -------- ask_example --------
+  - {text: "mi fai un esempio pratico", cats: {ask_example: 1}}
+  - {text: "hai un esempio semplice", cats: {ask_example: 1}}
+  - {text: "voglio vedere un caso reale mini", cats: {ask_example: 1}}
+  - {text: "mostra un esempio numerico piccolo", cats: {ask_example: 1}}
+  - {text: "un esempio veloce aiuterebbe", cats: {ask_example: 1}}
+  - {text: "serve esempio base per fissare", cats: {ask_example: 1}}
+  - {text: "esempio super easy per favore", cats: {ask_example: 1}}
+  - {text: "fammi capire con un caso", cats: {ask_example: 1}}
+  - {text: "portami un esempio che funzioni", cats: {ask_example: 1}}
+  - {text: "dammene uno molto semplice", cats: {ask_example: 1}}
+  - {text: "esempio subito grazie", cats: {ask_example: 1}}
+  - {text: "mostra un caso tipico", cats: {ask_example: 1}}
+  - {text: "hai un esempio che evidenzia il salto logico", cats: {ask_example: 1}}
+  - {text: "mostra un esempio completo non solo il risultato", cats: {ask_example: 1}}
+  - {text: "mi serve un esempio con spiegazione passo", cats: {ask_example: 1}}
+  - {text: "puoi farmi vedere un esempio con numeri", cats: {ask_example: 1}}
+  - {text: "un caso pratico reale per favore", cats: {ask_example: 1}}
+  - {text: "mi dai un esempio piccolo ma chiaro", cats: {ask_example: 1}}
+  - {text: "fammi un esempio che segua lo stesso flusso", cats: {ask_example: 1}}
+  - {text: "serve esempio completo dall inizio", cats: {ask_example: 1}}
+  - {text: "un esempio diverso da quello di prima", cats: {ask_example: 1}}
+  - {text: "puoi rifare con un altro esempio simile", cats: {ask_example: 1}}
+  - {text: "mostra un esempio con i passaggi scritti", cats: {ask_example: 1}}
+  - {text: "hai un esempio diverso con numeri piccoli", cats: {ask_example: 1}}
+  - {text: "fammi un caso reale simile a quello spiegato", cats: {ask_example: 1}}
+  - {text: "serve un altro esempio per fissare meglio", cats: {ask_example: 1}}
+  - {text: "mi mostri un mini esempio passo passo", cats: {ask_example: 1}}
+  - {text: "un esempio concreto col procedimento", cats: {ask_example: 1}}
+  - {text: "mi fai vedere un esempio che cambia un dettaglio", cats: {ask_example: 1}}
+  - {text: "ancora un esempio piu sintetico", cats: {ask_example: 1}}
+  - {text: "mostrami un contro esempio se esiste", cats: {ask_example: 1}}
+  - {text: "porta un esempio con numeri diversi ma stesso schema", cats: {ask_example: 1}}
+  - {text: "mostra un micro esempio contrastante", cats: {ask_example: 1}}
+  - {text: "altro esempio con cambiamento minimo", cats: {ask_example: 1}}
+  - {text: "dammene uno realistico di contesto differente", cats: {ask_example: 1}}
+  - {text: "esempio dettagliato con tutti i passaggi espliciti", cats: {ask_example: 1}}
+  - {text: "voglio un esempio che evidenzi l errore comune", cats: {ask_example: 1}}
+  - {text: "mostra un esempio limite semplice", cats: {ask_example: 1}}
+  - {text: "esempio piu sintetico ancora", cats: {ask_example: 1}}
+  - {text: "fammi vedere un esempio borderline", cats: {ask_example: 1}}
+  - {text: "serve un esempio illustrativo rapido", cats: {ask_example: 1}}
+
+  # -------- request_summary --------
+  - {text: "me lo riassumi in breve", cats: {request_summary: 1}}
+  - {text: "riassunto punti chiave", cats: {request_summary: 1}}
+  - {text: "puoi fare una sintesi rapida", cats: {request_summary: 1}}
+  - {text: "stringi tutto al succo", cats: {request_summary: 1}}
+  - {text: "dammi solo la panoramica", cats: {request_summary: 1}}
+  - {text: "che devo ricordare in due righe", cats: {request_summary: 1}}
+  - {text: "fai recap veloce please", cats: {request_summary: 1}}
+  - {text: "mi dai la versione corta", cats: {request_summary: 1}}
+  - {text: "elenco rapido concetti principali", cats: {request_summary: 1}}
+  - {text: "sintesi secca grazie", cats: {request_summary: 1}}
+  - {text: "chiudi con un riassunto", cats: {request_summary: 1}}
+  - {text: "ok ora recap", cats: {request_summary: 1}}
+  - {text: "riassumimi solo i passaggi decisivi", cats: {request_summary: 1}}
+  - {text: "dammi un quadro riassuntivo prima di andare avanti", cats: {request_summary: 1}}
+  - {text: "ricapitoliamo in modo schematico", cats: {request_summary: 1}}
+  - {text: "puoi fare un riassunto super sintetico", cats: {request_summary: 1}}
+  - {text: "recap punti principali", cats: {request_summary: 1}}
+  - {text: "tira fuori solo le idee base", cats: {request_summary: 1}}
+  - {text: "mi basta il succo finale", cats: {request_summary: 1}}
+  - {text: "fammi un riassunto prima di cambiare argomento", cats: {request_summary: 1}}
+  - {text: "riepilogo veloce dei concetti", cats: {request_summary: 1}}
+  - {text: "una sintesi ordinata per favore", cats: {request_summary: 1}}
+  - {text: "riassunto senza esempi", cats: {request_summary: 1}}
+  - {text: "puoi chiudere con un riepilogo secco", cats: {request_summary: 1}}
+  - {text: "riassunto essenziale per memorizzare", cats: {request_summary: 1}}
+  - {text: "dammi solo bullet dei punti base", cats: {request_summary: 1}}
+  - {text: "mi fai un riassunto senza dettagli tecnici", cats: {request_summary: 1}}
+  - {text: "recap finale prima di cambiare tema", cats: {request_summary: 1}}
+  - {text: "stringi ai tre concetti chiave", cats: {request_summary: 1}}
+  - {text: "ricapitoliamo super corto", cats: {request_summary: 1}}
+  - {text: "riepilogo compatto ora", cats: {request_summary: 1}}
+  - {text: "riassunto lampo in una frase", cats: {request_summary: 1}}
+  - {text: "stringi a due punti chiave", cats: {request_summary: 1}}
+  - {text: "sintesi bullet super compatta", cats: {request_summary: 1}}
+  - {text: "fammi un recap in stile elenco minimo", cats: {request_summary: 1}}
+  - {text: "solo le idee portanti per favore", cats: {request_summary: 1}}
+  - {text: "chiudi con un micro riassunto schematico", cats: {request_summary: 1}}
+  - {text: "serve un riepilogo di verifica", cats: {request_summary: 1}}
+  - {text: "ricapitolazione essenziale senza esempi", cats: {request_summary: 1}}
+  - {text: "dammi una sintesi mnemonica", cats: {request_summary: 1}}
+  - {text: "resoconto iper breve", cats: {request_summary: 1}}
+
+  # -------- ask_steps --------
+  - {text: "quali sono i passi da fare", cats: {ask_steps: 1}}
+  - {text: "dammi la procedura step by step", cats: {ask_steps: 1}}
+  - {text: "lista passaggi ordinati per favore", cats: {ask_steps: 1}}
+  - {text: "come procedo esattamente", cats: {ask_steps: 1}}
+  - {text: "prima cosa poi cosa", cats: {ask_steps: 1}}
+  - {text: "scrivi i passi essenziali", cats: {ask_steps: 1}}
+  - {text: "workflow ridotto me lo dai", cats: {ask_steps: 1}}
+  - {text: "sequenza minima necessaria", cats: {ask_steps: 1}}
+  - {text: "ok quali fasi ci sono", cats: {ask_steps: 1}}
+  - {text: "passaggi uno dietro l altro", cats: {ask_steps: 1}}
+  - {text: "roadmap rapida pls", cats: {ask_steps: 1}}
+  - {text: "ordine azioni richiesto", cats: {ask_steps: 1}}
+  - {text: "scomponi in micro passi per favore", cats: {ask_steps: 1}}
+  - {text: "mi elenchi la catena completa delle azioni", cats: {ask_steps: 1}}
+  - {text: "passi con eventuali condizioni se servono", cats: {ask_steps: 1}}
+  - {text: "puoi elencare i passi in ordine preciso", cats: {ask_steps: 1}}
+  - {text: "che sequenza devo seguire", cats: {ask_steps: 1}}
+  - {text: "ordine esatto delle operazioni", cats: {ask_steps: 1}}
+  - {text: "fammi la lista delle fasi principali", cats: {ask_steps: 1}}
+  - {text: "cosa faccio prima e cosa dopo", cats: {ask_steps: 1}}
+  - {text: "dammi i passaggi puliti senza spiegazione", cats: {ask_steps: 1}}
+  - {text: "mi elenchi le tappe una sotto l altra", cats: {ask_steps: 1}}
+  - {text: "passi essenziali solo quelli", cats: {ask_steps: 1}}
+  - {text: "metti i passi in ordine numerato", cats: {ask_steps: 1}}
+  - {text: "mi serve la sequenza operativa base", cats: {ask_steps: 1}}
+  - {text: "passi fondamentali senza spiegazione", cats: {ask_steps: 1}}
+  - {text: "quale e il flusso di lavoro qui", cats: {ask_steps: 1}}
+  - {text: "scrivi pipeline minimale", cats: {ask_steps: 1}}
+  - {text: "cosa devo fare prima di quella fase", cats: {ask_steps: 1}}
+  - {text: "elenca i subpassaggi interni", cats: {ask_steps: 1}}
+  - {text: "timeline sintetica dei passi", cats: {ask_steps: 1}}
+  - {text: "scrivi pipeline completa numerata", cats: {ask_steps: 1}}
+  - {text: "lista ordinata con prerequisiti se servono", cats: {ask_steps: 1}}
+  - {text: "sequenza step minimale verificata", cats: {ask_steps: 1}}
+  - {text: "metti i passi con eventuali condizioni", cats: {ask_steps: 1}}
+  - {text: "passi lineari senza spiegazioni extra", cats: {ask_steps: 1}}
+  - {text: "workflow numerico essenziale", cats: {ask_steps: 1}}
+  - {text: "catena dei passaggi compatti", cats: {ask_steps: 1}}
+  - {text: "ordine preciso sintetico", cats: {ask_steps: 1}}
+  - {text: "schema operativo in punti", cats: {ask_steps: 1}}
+  - {text: "timeline micro dei passi", cats: {ask_steps: 1}}
+
+  # -------- ask_compare --------
+  - {text: "quali differenze tra questi due", cats: {ask_compare: 1}}
+  - {text: "confronta le due opzioni", cats: {ask_compare: 1}}
+  - {text: "pro e contro dei due metodi", cats: {ask_compare: 1}}
+  - {text: "cosa cambia rispetto all altro", cats: {ask_compare: 1}}
+  - {text: "fammi paragone veloce", cats: {ask_compare: 1}}
+  - {text: "qual e meglio in generale", cats: {ask_compare: 1}}
+  - {text: "dimmi tradeoff principali", cats: {ask_compare: 1}}
+  - {text: "mettili affiancati differenze", cats: {ask_compare: 1}}
+  - {text: "perche scegliere uno invece dell altro", cats: {ask_compare: 1}}
+  - {text: "quali punti li distinguono di piu", cats: {ask_compare: 1}}
+  - {text: "dove divergono davvero", cats: {ask_compare: 1}}
+  - {text: "comparison rapido grazie", cats: {ask_compare: 1}}
+  - {text: "se devo ottimizzare tempo quale preferisco e perche", cats: {ask_compare: 1}}
+  - {text: "differenze funzionali e impatto pratico", cats: {ask_compare: 1}}
+  - {text: "spiega cosa perdo scegliendo il secondo rispetto al primo", cats: {ask_compare: 1}}
+  - {text: "in cosa sono diversi davvero", cats: {ask_compare: 1}}
+  - {text: "mi fai un confronto sintetico", cats: {ask_compare: 1}}
+  - {text: "che cambia a livello pratico tra i due", cats: {ask_compare: 1}}
+  - {text: "qual e piu adatto se ho poco tempo", cats: {ask_compare: 1}}
+  - {text: "cosa guadagno con il primo rispetto al secondo", cats: {ask_compare: 1}}
+  - {text: "differenze chiave elenco", cats: {ask_compare: 1}}
+  - {text: "metodi simili spiegami cio che li separa", cats: {ask_compare: 1}}
+  - {text: "cosa rischierei scegliendo l altro", cats: {ask_compare: 1}}
+  - {text: "differenze principali in una riga ciascuna", cats: {ask_compare: 1}}
+  - {text: "metti pro e contro side by side", cats: {ask_compare: 1}}
+  - {text: "qual e piu robusto in generale", cats: {ask_compare: 1}}
+  - {text: "quale scala meglio e perche", cats: {ask_compare: 1}}
+  - {text: "cambia qualcosa in termini di tempo", cats: {ask_compare: 1}}
+  - {text: "in che caso conviene il secondo", cats: {ask_compare: 1}}
+  - {text: "punti di forza e debolezza rapidi", cats: {ask_compare: 1}}
+  - {text: "cosa sacrifico scegliendo il primo", cats: {ask_compare: 1}}
+  - {text: "contrasta i due metodi sui criteri base", cats: {ask_compare: 1}}
+  - {text: "fammi una tab mentale differenze", cats: {ask_compare: 1}}
+  - {text: "mostra punti di divergenza principali", cats: {ask_compare: 1}}
+  - {text: "in quali scenari uno batte l altro", cats: {ask_compare: 1}}
+  - {text: "vantaggi relativi elencati", cats: {ask_compare: 1}}
+  - {text: "svantaggi del secondo rispetto al primo", cats: {ask_compare: 1}}
+  - {text: "criteri chiave di confronto rapidi", cats: {ask_compare: 1}}
+  - {text: "riassumi differenze funzionali", cats: {ask_compare: 1}}
+  - {text: "metti differenze tecniche in elenco", cats: {ask_compare: 1}}
+  - {text: "fammi capire dove differiscono di piu", cats: {ask_compare: 1}}
+
+  # -------- ask_simplify --------
+  - {text: "spiegamelo piu semplice", cats: {ask_simplify: 1}}
+  - {text: "puoi semplificare tutto", cats: {ask_simplify: 1}}
+  - {text: "versione base per favore", cats: {ask_simplify: 1}}
+  - {text: "parole piu easy grazie", cats: {ask_simplify: 1}}
+  - {text: "terra terra come funziona", cats: {ask_simplify: 1}}
+  - {text: "togli il gergo tecnico", cats: {ask_simplify: 1}}
+  - {text: "fammi capire come se fossi alle prime armi", cats: {ask_simplify: 1}}
+  - {text: "riscrivilo modo semplice", cats: {ask_simplify: 1}}
+  - {text: "riduci la complessita", cats: {ask_simplify: 1}}
+  - {text: "fai la versione corta e facile", cats: {ask_simplify: 1}}
+  - {text: "piu intuitivo per favore", cats: {ask_simplify: 1}}
+  - {text: "spiegazione base niente fronzoli", cats: {ask_simplify: 1}}
+  - {text: "abbassa il livello di difficolta della spiegazione", cats: {ask_simplify: 1}}
+  - {text: "taglia tutto cio che e superfluo rendilo semplice", cats: {ask_simplify: 1}}
+  - {text: "fammi una metafora facile", cats: {ask_simplify: 1}}
+  - {text: "puoi dirlo in modo piu diretto", cats: {ask_simplify: 1}}
+  - {text: "semplifica mi sto perdendo", cats: {ask_simplify: 1}}
+  - {text: "spiega come se avessi zero base", cats: {ask_simplify: 1}}
+  - {text: "riscrivi togliendo i dettagli inutili", cats: {ask_simplify: 1}}
+  - {text: "fammi capire senza formule", cats: {ask_simplify: 1}}
+  - {text: "metti una versione semplice sopra", cats: {ask_simplify: 1}}
+  - {text: "piu chiaro meno parole", cats: {ask_simplify: 1}}
+  - {text: "spiegalo piano semplice", cats: {ask_simplify: 1}}
+  - {text: "toglilo dal linguaggio tecnico e rendilo facile", cats: {ask_simplify: 1}}
+  - {text: "riscrivilo piu terra terra ancora", cats: {ask_simplify: 1}}
+  - {text: "spiega come a un amico fuori settore", cats: {ask_simplify: 1}}
+  - {text: "versione iper semplice per me", cats: {ask_simplify: 1}}
+  - {text: "riduci concetto al minimo", cats: {ask_simplify: 1}}
+  - {text: "fammi capire senza tecnicismi", cats: {ask_simplify: 1}}
+  - {text: "piu intuitivo togliendo formalita", cats: {ask_simplify: 1}}
+  - {text: "metti una spiegazione base base", cats: {ask_simplify: 1}}
+  - {text: "serve versione ancora piu intuitiva", cats: {ask_simplify: 1}}
+  - {text: "riscrivilo come se avessi dodici anni", cats: {ask_simplify: 1}}
+  - {text: "spiega togliendo formalismi", cats: {ask_simplify: 1}}
+  - {text: "riduci a concetto base quotidiano", cats: {ask_simplify: 1}}
+  - {text: "fammi una analogia semplice", cats: {ask_simplify: 1}}
+  - {text: "elimina gergo e ripeti", cats: {ask_simplify: 1}}
+  - {text: "spiegazione minimale iper chiara", cats: {ask_simplify: 1}}
+  - {text: "dammelo in linguaggio comune", cats: {ask_simplify: 1}}
+  - {text: "rifallo con parole piu corte", cats: {ask_simplify: 1}}
+  - {text: "ancora piu basic per favore", cats: {ask_simplify: 1}}
+
+  # -------- express_emotion --------
+  - {text: "sono gasato sta parte mi piace un sacco", cats: {express_emotion: 1}}
+  - {text: "mi sento motivato oggi", cats: {express_emotion: 1}}
+  - {text: "oggi un po giu ma ci provo", cats: {express_emotion: 1}}
+  - {text: "felice che finalmente capisco qualcosa", cats: {express_emotion: 1}}
+  - {text: "sto iniziando a innervosirmi", cats: {express_emotion: 1}}
+  - {text: "ansioso pero curioso", cats: {express_emotion: 1}}
+  - {text: "mi sta frustando sta parte", cats: {express_emotion: 1}}
+  - {text: "adesso sono tranquillo", cats: {express_emotion: 1}}
+  - {text: "sono stanchino", cats: {express_emotion: 1}}
+  - {text: "soddisfatto dei progressi", cats: {express_emotion: 1}}
+  - {text: "irritato perche lento", cats: {express_emotion: 1}}
+  - {text: "un filo nervoso ora", cats: {express_emotion: 1}}
+  - {text: "mi sento sollevato dopo quella spiegazione", cats: {express_emotion: 1}}
+  - {text: "sto perdendo entusiasmo piano piano", cats: {express_emotion: 1}}
+  - {text: "mi rincuora capire almeno un pezzo", cats: {express_emotion: 1}}
+  - {text: "mi scoraggia quanto tempo ci metto", cats: {express_emotion: 1}}
+  - {text: "mi incoraggia vedere che miglioro", cats: {express_emotion: 1}}
+  - {text: "questa parte mi stressa mentalmente", cats: {express_emotion: 1}}
+  - {text: "sono contento sta volta sto seguendo", cats: {express_emotion: 1}}
+  - {text: "mi agita un po questo argomento", cats: {express_emotion: 1}}
+  - {text: "sto perdendo pazienza piano", cats: {express_emotion: 1}}
+  - {text: "mi rincuora che qualcosa torna", cats: {express_emotion: 1}}
+  - {text: "mi pesa sto pezzo", cats: {express_emotion: 1}}
+  - {text: "sono curioso di vedere il resto", cats: {express_emotion: 1}}
+  - {text: "mi da fastidio non riuscire", cats: {express_emotion: 1}}
+  - {text: "mi sento abbastanza sereno ora", cats: {express_emotion: 1}}
+  - {text: "sono un po piu fiducioso adesso", cats: {express_emotion: 1}}
+  - {text: "inizio ad agitarmi di nuovo", cats: {express_emotion: 1}}
+  - {text: "questa parte mi sta gasando", cats: {express_emotion: 1}}
+  - {text: "mi pesa mentalmente ma vado avanti", cats: {express_emotion: 1}}
+  - {text: "mi sento meno stressato", cats: {express_emotion: 1}}
+  - {text: "sto tornando motivato piano piano", cats: {express_emotion: 1}}
+  - {text: "mi deprime non vedere progressi rapidi", cats: {express_emotion: 1}}
+  - {text: "sto prendendo fiducia", cats: {express_emotion: 1}}
+  - {text: "mi sta gasando ancora di piu adesso", cats: {express_emotion: 1}}
+  - {text: "sto calando di motivazione", cats: {express_emotion: 1}}
+  - {text: "un po incoraggiato ma anche teso", cats: {express_emotion: 1}}
+  - {text: "sono moderatamente fiducioso", cats: {express_emotion: 1}}
+  - {text: "mi pesa psicologicamente", cats: {express_emotion: 1}}
+  - {text: "leggermente piu ottimista", cats: {express_emotion: 1}}
+  - {text: "ancora frustrato ma curioso", cats: {express_emotion: 1}}
+  - {text: "mi rilassa la chiarezza", cats: {express_emotion: 1}}
+  - {text: "sto diventando impaziente", cats: {express_emotion: 1}}
+  - {text: "sono soddisfatto del ritmo", cats: {express_emotion: 1}}
+
+  # -------- express_difficulty --------
+  - {text: "non ci sto capendo niente", cats: {express_difficulty: 1}}
+  - {text: "mi sto perdendo a meta", cats: {express_difficulty: 1}}
+  - {text: "non riesco a collegare i pezzi", cats: {express_difficulty: 1}}
+  - {text: "mi sfugge la parte centrale", cats: {express_difficulty: 1}}
+  - {text: "sto faticando a seguire il filo", cats: {express_difficulty: 1}}
+  - {text: "mi blocco sempre qui help", cats: {express_difficulty: 1}}
+  - {text: "non afferro il salto logico", cats: {express_difficulty: 1}}
+  - {text: "mi confondo coi dettagli", cats: {express_difficulty: 1}}
+  - {text: "non seguo piu", cats: {express_difficulty: 1}}
+  - {text: "non visualizzo la struttura", cats: {express_difficulty: 1}}
+  - {text: "mi perdo nel ragionamento", cats: {express_difficulty: 1}}
+  - {text: "sto ancora bloccato", cats: {express_difficulty: 1}}
+  - {text: "mi sta venendo confusione mentale", cats: {express_difficulty: 1}}
+  - {text: "non riesco a tenere insieme i livelli", cats: {express_difficulty: 1}}
+  - {text: "mi perdo quando cambia scenario", cats: {express_difficulty: 1}}
+  - {text: "fatico a distinguere concetto da esempio", cats: {express_difficulty: 1}}
+  - {text: "mi incarto sulle definizioni simili", cats: {express_difficulty: 1}}
+  - {text: "mi crea disorientamento sto passaggio", cats: {express_difficulty: 1}}
+  - {text: "sto arrancando su sta parte", cats: {express_difficulty: 1}}
+  - {text: "mi incasino sempre qui", cats: {express_difficulty: 1}}
+  - {text: "non mi entra questo concetto", cats: {express_difficulty: 1}}
+  - {text: "sto facendo fatica a restare concentrato qui", cats: {express_difficulty: 1}}
+  - {text: "ogni volta qui mi blocco", cats: {express_difficulty: 1}}
+  - {text: "non afferro il senso generale", cats: {express_difficulty: 1}}
+  - {text: "continuo a perdermi nei dettagli", cats: {express_difficulty: 1}}
+  - {text: "sto ancora confuso dopo rilettura", cats: {express_difficulty: 1}}
+  - {text: "non riesco ancora a stabilizzare il concetto", cats: {express_difficulty: 1}}
+  - {text: "mi perdo nel mezzo dell argomento", cats: {express_difficulty: 1}}
+  - {text: "mi manca il quadro globale", cats: {express_difficulty: 1}}
+  - {text: "rimango bloccato sempre sullo stesso punto", cats: {express_difficulty: 1}}
+  - {text: "continuo a confondere i due termini", cats: {express_difficulty: 1}}
+  - {text: "non fissano in testa gli step", cats: {express_difficulty: 1}}
+  - {text: "mi incarto nella parte iniziale", cats: {express_difficulty: 1}}
+  - {text: "sto ancora facendo fatica a seguire il flusso", cats: {express_difficulty: 1}}
+  - {text: "mi inceppo nel collegare i concetti", cats: {express_difficulty: 1}}
+  - {text: "non reggo la complessita qui", cats: {express_difficulty: 1}}
+  - {text: "ancora confusione sui nessi logici", cats: {express_difficulty: 1}}
+  - {text: "perdo il filo quando cambiano esempio", cats: {express_difficulty: 1}}
+  - {text: "non sintetizzo mentalmente la struttura", cats: {express_difficulty: 1}}
+  - {text: "mi resta opaca la motivazione del passaggio", cats: {express_difficulty: 1}}
+  - {text: "non so dove incastrare questo pezzo", cats: {express_difficulty: 1}}
+  - {text: "mi disorienta la notazione", cats: {express_difficulty: 1}}
+  - {text: "fatico a tenere memoria dei passi", cats: {express_difficulty: 1}}
+  - {text: "perdo coerenza tra un blocco e l altro", cats: {express_difficulty: 1}}
+
+
+  # -------- Multi‑intent colloquiali + complessi --------
+  - {text: "non capisco nulla spiegami e fammi un esempio", cats: {express_difficulty: 1, ask_explanation: 1, ask_example: 1}}
+  - {text: "dammi definizione e poi esempio easy", cats: {ask_definition: 1, ask_example: 1, ask_simplify: 1}}
+  - {text: "spiega perche succede poi fai un recap", cats: {ask_explanation: 1, request_summary: 1}}
+  - {text: "sono confuso definizione esempio e spiegazione semplice", cats: {express_difficulty: 1, ask_definition: 1, ask_example: 1, ask_simplify: 1, ask_explanation: 1}}
+  - {text: "ansioso e perso spiegami semplice con caso pratico", cats: {express_emotion: 1, express_difficulty: 1, ask_explanation: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "fammi i passi e alla fine un riassunto veloce", cats: {ask_steps: 1, request_summary: 1}}
+  - {text: "confronta i due e poi un esempio chiaro", cats: {ask_compare: 1, ask_example: 1}}
+  - {text: "definizione spiegazione esempio e riassunto finale please", cats: {ask_definition: 1, ask_explanation: 1, ask_example: 1, request_summary: 1}}
+  - {text: "non seguo differenze spiegale e semplifica tutto", cats: {express_difficulty: 1, ask_compare: 1, ask_explanation: 1, ask_simplify: 1}}
+  - {text: "passi chiari poi spiegami perche funzionano", cats: {ask_steps: 1, ask_explanation: 1}}
+  - {text: "prima confronto poi riassunto corto e semplice", cats: {ask_compare: 1, request_summary: 1, ask_simplify: 1}}
+  - {text: "riassumi e dammi un esempio super semplice", cats: {request_summary: 1, ask_example: 1, ask_simplify: 1}}
+  - {text: "ho difficolta spiegazione easy piu esempio pratico", cats: {express_difficulty: 1, ask_explanation: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "ansia aiuto passi spiegazione e riassunto", cats: {express_emotion: 1, ask_steps: 1, ask_explanation: 1, request_summary: 1}}
+  - {text: "definizione piu esempio semplice per fissare", cats: {ask_definition: 1, ask_example: 1, ask_simplify: 1}}
+  - {text: "sono bloccato spiegazione semplificata poi elenco passi e un esempio", cats: {express_difficulty: 1, ask_explanation: 1, ask_simplify: 1, ask_steps: 1, ask_example: 1}}
+  - {text: "confuso e un po giu definizione confronto esempio e recap finale", cats: {express_difficulty: 1, express_emotion: 1, ask_definition: 1, ask_compare: 1, ask_example: 1, request_summary: 1}}
+  - {text: "mi scoraggia non capire fammi passi spiegazione semplice e esempio", cats: {express_emotion: 1, express_difficulty: 1, ask_steps: 1, ask_explanation: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "prima differenze poi spiegazione concettuale e riassunto conclusivo", cats: {ask_compare: 1, ask_explanation: 1, request_summary: 1}}
+  - {text: "difficolta enorme definizione chiarita poi esempio e confronto", cats: {express_difficulty: 1, ask_definition: 1, ask_example: 1, ask_compare: 1}}
+  - {text: "spiegami e dopo un esempio e un riassunto grazie", cats: {ask_explanation: 1, ask_example: 1, request_summary: 1}}
+  - {text: "definizione poi spiegazione semplice e un esempio", cats: {ask_definition: 1, ask_explanation: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "passi poi spiegazione semplificata e esempio finale", cats: {ask_steps: 1, ask_explanation: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "confronto e infine riepilogo breve", cats: {ask_compare: 1, request_summary: 1}}
+  - {text: "non capisco definizione esempio e poi passo passo", cats: {express_difficulty: 1, ask_definition: 1, ask_example: 1, ask_steps: 1}}
+  - {text: "mi sto perdendo fammi prima i passi poi un riassunto", cats: {express_difficulty: 1, ask_steps: 1, request_summary: 1}}
+  - {text: "ansioso spiegazione semplice piu confronto", cats: {express_emotion: 1, ask_explanation: 1, ask_simplify: 1, ask_compare: 1}}
+  - {text: "ho bisogno differenze esempio e spiegazione facile", cats: {ask_compare: 1, ask_example: 1, ask_simplify: 1}}
+  - {text: "non capisco bene differenze e vorrei un esempio", cats: {express_difficulty: 1, ask_compare: 1, ask_example: 1}}
+  - {text: "fammi definizione breve poi esempio e riassunto", cats: {ask_definition: 1, ask_example: 1, request_summary: 1}}
+  - {text: "spiegami concetto in semplice e un caso pratico", cats: {ask_explanation: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "passi chiari piu spiegazione facile perche sono confuso", cats: {ask_steps: 1, ask_simplify: 1, express_difficulty: 1, ask_explanation: 1}}
+  - {text: "ansioso confronto tra metodi e poi riassumi", cats: {express_emotion: 1, ask_compare: 1, request_summary: 1}}
+  - {text: "difficolta definizione spiegazione semplice e esempio", cats: {express_difficulty: 1, ask_definition: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "mi blocco fai prima i passi poi un esempio", cats: {express_difficulty: 1, ask_steps: 1, ask_example: 1}}
+  - {text: "non seguo fammi definizione confronto e riassunto", cats: {express_difficulty: 1, ask_definition: 1, ask_compare: 1, request_summary: 1}}
+  - {text: "spiegami concetto poi confronto e un esempio", cats: {ask_explanation: 1, ask_compare: 1, ask_example: 1}}
+  - {text: "definizione passi e riassunto finale", cats: {ask_definition: 1, ask_steps: 1, request_summary: 1}}
+  - {text: "difficolta spiegami semplice e dammi confronto", cats: {express_difficulty: 1, ask_simplify: 1, ask_compare: 1}}
+  - {text: "emozionato ma confuso definizione esempio e spiegazione", cats: {express_emotion: 1, express_difficulty: 1, ask_definition: 1, ask_example: 1, ask_explanation: 1}}
+  - {text: "passi spiegazione concetto e riepilogo", cats: {ask_steps: 1, ask_explanation: 1, request_summary: 1}}
+  - {text: "confronto esempio e riassunto compatto", cats: {ask_compare: 1, ask_example: 1, request_summary: 1}}
+  - {text: "definizione semplifica e poi mostra un esempio", cats: {ask_definition: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "spiegazione semplice piu passi e confronto", cats: {ask_simplify: 1, ask_steps: 1, ask_compare: 1}}
+  - {text: "non capisco dammi definizione confronto esempio riassunto", cats: {express_difficulty: 1, ask_definition: 1, ask_compare: 1, ask_example: 1, request_summary: 1}}
+  - {text: "difficolta voglio passi esempio e spiegazione", cats: {express_difficulty: 1, ask_steps: 1, ask_example: 1, ask_explanation: 1}}
+
+
+  # -------- Noise / neutre --------
+  - {text: "ciao", cats: {}}
+  - {text: "hey ci sei", cats: {}}
+  - {text: "ok continua", cats: {}}
+  - {text: "va bene avanti", cats: {}}
+  - {text: "tutto chiaro finora", cats: {}}
+  - {text: "per ora niente domande", cats: {}}
+  - {text: "prosegui pure", cats: {}}
+  - {text: "si vai", cats: {}}
+  - {text: "capito grazie", cats: {}}
+  - {text: "ottimo", cats: {}}
+  - {text: "nessun dubbio adesso", cats: {}}
+  - {text: "tutto ok procedi", cats: {}}
+  - {text: "ok", cats: {}}
+  - {text: "va bene", cats: {}}
+  - {text: "continua pure", cats: {}}
+  - {text: "ci sono", cats: {}}
+  - {text: "fin qui ok", cats: {}}
+  - {text: "tutto ok vai avanti pure", cats: {}}
+  - {text: "procedi", cats: {}}
+  - {text: "si continua", cats: {}}
+  - {text: "ok ricevuto", cats: {}}
+  - {text: "chiaro grazie", cats: {}}
+  - {text: "tutto bene continua pure", cats: {}}
+  - {text: "va avanti", cats: {}}
+  - {text: "procedi ancora", cats: {}}
+  - {text: "ok fino a qui", cats: {}}
+  - {text: "nessun dubbio adesso", cats: {}}
+  - {text: "nulla da chiedere vai", cats: {}}
+  - {text: "per ora ok", cats: {}}
+  - {text: "capito fin qui", cats: {}}
+  - {text: "si procede", cats: {}}
+  - {text: "puoi andare avanti", cats: {}}
+
+dev:
+  - {text: "perche funziona cosi spiegamelo", cats: {ask_explanation: 1}}
+  - {text: "definizione rapida del termine", cats: {ask_definition: 1}}
+  - {text: "fammi vedere un esempio easy", cats: {ask_example: 1}}
+  - {text: "recap veloce", cats: {request_summary: 1}}
+  - {text: "lista passi principali", cats: {ask_steps: 1}}
+  - {text: "quali differenze tra i due metodi", cats: {ask_compare: 1}}
+  - {text: "riscrivilo semplice pls", cats: {ask_simplify: 1}}
+  - {text: "sono un po agitato", cats: {express_emotion: 1}}
+  - {text: "non ci arrivo sto faticando", cats: {express_difficulty: 1}}
+  - {text: "non capisco definizione piu esempio", cats: {express_difficulty: 1, ask_definition: 1, ask_example: 1}}
+  - {text: "spiega e poi esempio pratico", cats: {ask_explanation: 1, ask_example: 1}}
+  - {text: "passi e riassunto finale", cats: {ask_steps: 1, request_summary: 1}}
+  - {text: "confronto e versione semplice", cats: {ask_compare: 1, ask_simplify: 1}}
+  - {text: "ansioso e confuso spiegazione semplice", cats: {express_emotion: 1, express_difficulty: 1, ask_explanation: 1, ask_simplify: 1}}
+  - {text: "ok tutto bene vai", cats: {}}
+  - {text: "mi demoralizza non capire puoi semplificare", cats: {express_emotion: 1, ask_simplify: 1}}
+  - {text: "faccio fatica a vedere la differenza spiega semplice", cats: {express_difficulty: 1, ask_compare: 1, ask_simplify: 1}}
+  - {text: "dammi la sequenza e una spiegazione del perche", cats: {ask_steps: 1, ask_explanation: 1}}
+  - {text: "definizione e poi un esempio rapido grazie", cats: {ask_definition: 1, ask_example: 1}}
+  - {text: "non mi e chiaro sto passaggio", cats: {ask_explanation: 1}}
+  - {text: "significato preciso di questo termine", cats: {ask_definition: 1}}
+  - {text: "un altro esempio diverso", cats: {ask_example: 1}}
+  - {text: "puoi fare un riassunto corto", cats: {request_summary: 1}}
+  - {text: "ordine esatto dei passi", cats: {ask_steps: 1}}
+  - {text: "confronto rapido pro contro", cats: {ask_compare: 1}}
+  - {text: "spiegalo piu semplice ancora", cats: {ask_simplify: 1}}
+  - {text: "sto perdendo pazienza", cats: {express_emotion: 1}}
+  - {text: "mi sto incartando", cats: {express_difficulty: 1}}
+  - {text: "spiegami e alla fine un riepilogo", cats: {ask_explanation: 1, request_summary: 1}}
+  - {text: "passi piu esempio per favore", cats: {ask_steps: 1, ask_example: 1}}
+  - {text: "differenze e poi spiega semplice", cats: {ask_compare: 1, ask_simplify: 1}}
+  - {text: "non seguo definizione e esempio e semplifica", cats: {express_difficulty: 1, ask_definition: 1, ask_example: 1, ask_simplify: 1}}
+  - {text: "ok prosegui tutto chiaro", cats: {}}
+  - {text: "mi manca ancora il perche succede", cats: {ask_explanation: 1}}
+  - {text: "definizione sintetica per favore", cats: {ask_definition: 1}}
+  - {text: "un altro esempio pratico", cats: {ask_example: 1}}
+  - {text: "riepilogo essenziale", cats: {request_summary: 1}}
+  - {text: "sequenza passi minima", cats: {ask_steps: 1}}
+  - {text: "fammi differenze chiave", cats: {ask_compare: 1}}
+  - {text: "spiegalo ancora piu semplice", cats: {ask_simplify: 1}}
+  - {text: "mi sto scoraggiando", cats: {express_emotion: 1}}
+  - {text: "non riesco a seguire thread", cats: {express_difficulty: 1}}
+  - {text: "definizione e esempio e poi recap", cats: {ask_definition: 1, ask_example: 1, request_summary: 1}}
+  - {text: "passi e spiegazione facile", cats: {ask_steps: 1, ask_simplify: 1}}
+  - {text: "confronto piu esempio", cats: {ask_compare: 1, ask_example: 1}}
+  - {text: "confuso spiegami e riassumi", cats: {express_difficulty: 1, ask_explanation: 1, request_summary: 1}}
+  - {text: "ok procede tutto", cats: {}}
+  - {text: "spiegami meglio il perche logico", cats: {ask_explanation: 1}}
+  - {text: "definizione ultra sintetica", cats: {ask_definition: 1}}
+  - {text: "mostra un altro micro esempio", cats: {ask_example: 1}}
+  - {text: "riepilogo in due punti", cats: {request_summary: 1}}
+  - {text: "dammi il flusso operativo breve", cats: {ask_steps: 1}}
+  - {text: "metti differenze essenziali", cats: {ask_compare: 1}}
+  - {text: "riscrivilo ancora piu facile", cats: {ask_simplify: 1}}
+  - {text: "sono un po demoralizzato", cats: {express_emotion: 1}}
+  - {text: "mi incasino nei passaggi medi", cats: {express_difficulty: 1}}
+  - {text: "definizione e poi riepilogo corto", cats: {ask_definition: 1, request_summary: 1}}
+  - {text: "spiegazione semplice e esempio", cats: {ask_simplify: 1, ask_example: 1}}
+  - {text: "passi e perche concettuale", cats: {ask_steps: 1, ask_explanation: 1}}
+  - {text: "difficolta voglio un esempio", cats: {express_difficulty: 1, ask_example: 1}}
+  - {text: "emozionato fammi un riassunto", cats: {express_emotion: 1, request_summary: 1}}
+  - {text: "differenze e semplifica", cats: {ask_compare: 1, ask_simplify: 1}}
+  - {text: "spiegazione e confronto", cats: {ask_explanation: 1, ask_compare: 1}}
+  - {text: "passi e riassunto secco", cats: {ask_steps: 1, request_summary: 1}}
+  - {text: "definizione piu esempio", cats: {ask_definition: 1, ask_example: 1}}
+  - {text: "difficolta spiegazione semplice e riassunto", cats: {express_difficulty: 1, ask_simplify: 1, request_summary: 1}}
+  - {text: "spiegami passi esempio e riepilogo", cats: {ask_explanation: 1, ask_steps: 1, ask_example: 1, request_summary: 1}}
+  - {text: "definizione confronto e esempio", cats: {ask_definition: 1, ask_compare: 1, ask_example: 1}}
+  - {text: "ansia spiegazione semplice passi", cats: {express_emotion: 1, ask_simplify: 1, ask_steps: 1, ask_explanation: 1}}
+  - {text: "confusione definizione esempio riassunto", cats: {express_difficulty: 1, ask_definition: 1, ask_example: 1, request_summary: 1}}
+  - {text: "difficolta confronto spiegalo facile", cats: {express_difficulty: 1, ask_compare: 1, ask_simplify: 1}}
+  - {text: "passi spiegazione confronto riassunto", cats: {ask_steps: 1, ask_explanation: 1, ask_compare: 1, request_summary: 1}}
+  - {text: "definizione semplice esempio confronto", cats: {ask_definition: 1, ask_simplify: 1, ask_example: 1, ask_compare: 1}}
+  - {text: "stressato spiegazione semplice e esempio", cats: {express_emotion: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "mi perdo fai passi esempio confronto", cats: {express_difficulty: 1, ask_steps: 1, ask_example: 1, ask_compare: 1}}
+  - {text: "nessuna domanda vai pure", cats: {}}
+  - {text: "ok tutto regolare avanti", cats: {}}
+  - {text: "procedi pure grazie", cats: {}}
+
+
+
+test:
+  - {text: "non capisco perche succede spiegalo", cats: {ask_explanation: 1}}
+  - {text: "cos e la definizione precisa", cats: {ask_definition: 1}}
+  - {text: "serve un esempio pratico subito", cats: {ask_example: 1}}
+  - {text: "puoi fare sintesi corta", cats: {request_summary: 1}}
+  - {text: "che passi devo seguire", cats: {ask_steps: 1}}
+  - {text: "differenze tra questi due spiegale", cats: {ask_compare: 1}}
+  - {text: "spiega super semplice grazie", cats: {ask_simplify: 1}}
+  - {text: "sono un po nervoso ora", cats: {express_emotion: 1}}
+  - {text: "sto faticando a seguire", cats: {express_difficulty: 1}}
+  - {text: "spiegazione e esempio easy", cats: {ask_explanation: 1, ask_example: 1, ask_simplify: 1}}
+  - {text: "definizione piu caso pratico", cats: {ask_definition: 1, ask_example: 1}}
+  - {text: "passi poi recap", cats: {ask_steps: 1, request_summary: 1}}
+  - {text: "confuso differenze spiegazione semplice", cats: {express_difficulty: 1, ask_compare: 1, ask_explanation: 1, ask_simplify: 1}}
+  - {text: "recap confronto rapido", cats: {request_summary: 1, ask_compare: 1}}
+  - {text: "ok tutto chiaro avanti", cats: {}}
+  - {text: "mi irrita non capirlo spiegazione piu terra terra", cats: {express_emotion: 1, ask_simplify: 1, ask_explanation: 1}}
+  - {text: "ancora perso spiegami con un esempio concreto", cats: {express_difficulty: 1, ask_explanation: 1, ask_example: 1}}
+  - {text: "fammi differenze e poi dimmi quale conviene", cats: {ask_compare: 1}}
+  - {text: "difficolta a seguire dammi passi e ragione del perche", cats: {express_difficulty: 1, ask_steps: 1, ask_explanation: 1}}
+  - {text: "mi rincuora un riassunto puoi farlo", cats: {express_emotion: 1, request_summary: 1}}
+  - {text: "non mi torna il ragionamento spiegami", cats: {ask_explanation: 1}}
+  - {text: "definizione corta del concetto", cats: {ask_definition: 1}}
+  - {text: "fammi un esempio diverso dal solito", cats: {ask_example: 1}}
+  - {text: "riepilogo veloce grazie", cats: {request_summary: 1}}
+  - {text: "elenca i passi principali", cats: {ask_steps: 1}}
+  - {text: "che differenze pratiche tra i due", cats: {ask_compare: 1}}
+  - {text: "spiegalo ancora piu semplice", cats: {ask_simplify: 1}}
+  - {text: "mi sto innervosendo", cats: {express_emotion: 1}}
+  - {text: "mi blocco su questa parte", cats: {express_difficulty: 1}}
+  - {text: "spiegazione semplice piu esempio", cats: {ask_explanation: 1, ask_example: 1, ask_simplify: 1}}
+  - {text: "definizione e un piccolo caso", cats: {ask_definition: 1, ask_example: 1}}
+  - {text: "passi e mini riassunto", cats: {ask_steps: 1, request_summary: 1}}
+  - {text: "non seguo differenze spiegami semplice", cats: {express_difficulty: 1, ask_compare: 1, ask_simplify: 1}}
+  - {text: "confronto e poi riassunto breve", cats: {ask_compare: 1, request_summary: 1}}
+  - {text: "ok procedi pure", cats: {}}
+  - {text: "ancora non afferro il perche", cats: {ask_explanation: 1}}
+  - {text: "dammi definizione secca", cats: {ask_definition: 1}}
+  - {text: "serve un altro esempio veloce", cats: {ask_example: 1}}
+  - {text: "recap super corto", cats: {request_summary: 1}}
+  - {text: "lista passi essenziali", cats: {ask_steps: 1}}
+  - {text: "fammi confronto chiaro", cats: {ask_compare: 1}}
+  - {text: "rendilo piu semplice ancora", cats: {ask_simplify: 1}}
+  - {text: "sto diventando frustrato", cats: {express_emotion: 1}}
+  - {text: "fatico ancora a seguirlo", cats: {express_difficulty: 1}}
+  - {text: "spiegazione piu esempio diverso", cats: {ask_explanation: 1, ask_example: 1}}
+  - {text: "definizione e riassunto", cats: {ask_definition: 1, request_summary: 1}}
+  - {text: "passi piu confronto", cats: {ask_steps: 1, ask_compare: 1}}
+  - {text: "confuso definizione e semplifica", cats: {express_difficulty: 1, ask_definition: 1, ask_simplify: 1}}
+  - {text: "ok vai pure avanti", cats: {}}
+  - {text: "spiegami il nesso logico", cats: {ask_explanation: 1}}
+  - {text: "definizione corta e chiara", cats: {ask_definition: 1}}
+  - {text: "fammi ancora un esempio mini", cats: {ask_example: 1}}
+  - {text: "riepilogo due bullet", cats: {request_summary: 1}}
+  - {text: "sequenza super breve", cats: {ask_steps: 1}}
+  - {text: "differenze in elenco", cats: {ask_compare: 1}}
+  - {text: "rendilo elementare", cats: {ask_simplify: 1}}
+  - {text: "sono un po ansioso", cats: {express_emotion: 1}}
+  - {text: "mi incarto a meta", cats: {express_difficulty: 1}}
+  - {text: "definizione e esempio rapido", cats: {ask_definition: 1, ask_example: 1}}
+  - {text: "spiega e riassumi", cats: {ask_explanation: 1, request_summary: 1}}
+  - {text: "passi e confronto", cats: {ask_steps: 1, ask_compare: 1}}
+  - {text: "difficolta voglio semplificazione", cats: {express_difficulty: 1, ask_simplify: 1}}
+  - {text: "emozionato fammi esempio", cats: {express_emotion: 1, ask_example: 1}}
+  - {text: "spiega semplice e differenze", cats: {ask_simplify: 1, ask_compare: 1}}
+  - {text: "passi piu spiegazione", cats: {ask_steps: 1, ask_explanation: 1}}
+  - {text: "confronto e riepilogo", cats: {ask_compare: 1, request_summary: 1}}
+  - {text: "difficolta spiegazione semplice e esempio", cats: {express_difficulty: 1, ask_simplify: 1, ask_example: 1}}
+  - {text: "definizione spiegami perche e poi un esempio", cats: {ask_definition: 1, ask_explanation: 1, ask_example: 1}}
+  - {text: "passi spiegazione riepilogo finale", cats: {ask_steps: 1, ask_explanation: 1, request_summary: 1}}
+  - {text: "ansioso non capisco fammi confronto e semplifica", cats: {express_emotion: 1, express_difficulty: 1, ask_compare: 1, ask_simplify: 1}}
+  - {text: "definizione confronto esempio e riassunto", cats: {ask_definition: 1, ask_compare: 1, ask_example: 1, request_summary: 1}}
+  - {text: "spiega semplice passi e esempio", cats: {ask_simplify: 1, ask_steps: 1, ask_example: 1}}
+  - {text: "confuso dammi passi spiegazione esempio", cats: {express_difficulty: 1, ask_steps: 1, ask_explanation: 1, ask_example: 1}}
+  - {text: "emozione confusione spiegazione facile e riepilogo", cats: {express_emotion: 1, express_difficulty: 1, ask_simplify: 1, ask_explanation: 1, request_summary: 1}}
+  - {text: "definizione esempio confronto e semplifica", cats: {ask_definition: 1, ask_example: 1, ask_compare: 1, ask_simplify: 1}}
+  - {text: "difficolta spiegazione semplice confronto riassunto", cats: {express_difficulty: 1, ask_explanation: 1, ask_simplify: 1, ask_compare: 1, request_summary: 1}}
+  - {text: "nessun dubbio continua", cats: {}}
+  - {text: "ok procede bene", cats: {}}
+  - {text: "tutto regolare avanti", cats: {}}
