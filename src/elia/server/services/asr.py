@@ -4,9 +4,13 @@ from faster_whisper import WhisperModel
 from elia.config import Config
 import torch
 from statistics import mean
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {device}")
+logger.info(f"Using device: {device}")
 
 _model = WhisperModel(
     Config.WHISPER_MODEL or "medium",
