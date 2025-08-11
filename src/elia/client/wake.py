@@ -1,11 +1,9 @@
 import os
-from dotenv import load_dotenv
 import pvporcupine
 from pvrecorder import PvRecorder
 from elia.config import Config
 from elia.client.events import event_emitter
 
-load_dotenv()
 ACCESS_KEY = Config.PICOVOICE_KEY
 KEYWORD_PATH = Config.PICOVOICE_WORD  # .ppn della keyword "Ehi Elia"
 
