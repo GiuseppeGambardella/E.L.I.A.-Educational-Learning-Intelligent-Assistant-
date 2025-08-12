@@ -2,7 +2,7 @@ import io, wave
 import sounddevice as sd
 import webrtcvad
 
-def record_until_silence(samplerate=16000, frame_ms=30, max_silence_ms=800):
+def record_until_silence(samplerate=16000, frame_ms=30, max_silence_ms=1500):
     """Registra finché c'è voce e si ferma dopo un certo silenzio."""
     
     vad = webrtcvad.Vad(2)  # livello di aggressività del VAD (0-3)

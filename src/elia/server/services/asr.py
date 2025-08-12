@@ -10,7 +10,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-logger.info(f"Using device: {device}")
 
 _model = WhisperModel(
     Config.WHISPER_MODEL or "medium",
@@ -18,7 +17,7 @@ _model = WhisperModel(
     compute_type="auto"
 )
 
-print("Faster Whisper model initialized")
+logger.info(f"Whisper model loaded: {Config.WHISPER_MODEL or 'medium'} on {device}")
 
 #Funzione di Trascrizione
 def transcribe_wav(path_wav: str) -> dict:

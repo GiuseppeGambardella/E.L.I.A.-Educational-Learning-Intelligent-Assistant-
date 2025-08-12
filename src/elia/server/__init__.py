@@ -1,7 +1,7 @@
 from flask import Flask
 from elia.config import Config
 from elia.server.routes.health import bp as health_bp
-from elia.server.routes.transcribe import bp as transcribe_bp
+from elia.server.routes.ask import bp as transcribe_bp
 
 def create_app():
     app = Flask(__name__, static_folder="server/static", static_url_path="/static")
