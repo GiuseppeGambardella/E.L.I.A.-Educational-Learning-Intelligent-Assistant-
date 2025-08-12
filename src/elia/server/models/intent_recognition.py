@@ -188,7 +188,8 @@ def load_patterns(reload: bool = False):
             try:
                 matcher.add(p["label"], [p["pattern"]])
             except Exception:
-                pass
+            except Exception as e:
+                logging.warning(f"[IntentRecognition] Failed to add pattern: label={p.get('label')}, pattern={p.get('pattern')}, error={e}")
 
         _nlp_patterns = nlp_pat
         _matcher = matcher
