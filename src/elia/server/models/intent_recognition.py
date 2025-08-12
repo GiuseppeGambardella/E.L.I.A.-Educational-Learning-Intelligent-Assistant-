@@ -212,7 +212,12 @@ def load_model_pipeline(reload: bool = False):
                 logging.warning("[IntentRecognition] Errore nel caricamento modello ML, fallback blank.")
         else:
             _nlp_model = spacy.blank("it")
-            logging.warning("[IntentRecognition] Modello ML non trovato, fallback blank.")
+            except FileNotFoundError as fnf_err:
+                _nlp_model = spacy.blank("it")
+                logging.error(f"[IntentRecognition] Modello ML non trovato in {MODEL_DIR}: {fnf_err}", exc_info=True)
+            except Exception as ex:
+                _nlp_model = spacy.blank("it")
+                logging.error(f"[IntentRecognition] Errore nel caricamento modello ML da {MODEL_DIR}: {ex}", exc_info=True)
         _loaded_model_time = time.time()
 
 # =========================
