@@ -55,6 +55,19 @@ def play_audio(audio):
             sr = f.samplerate
         sd.stop()
         sd.play(data, sr)
-        sd.wait()
+    if not audio:
+        print("⚠️ Nessun audio da riprodurre (audio è None o vuoto).")
+        return
+    audio_b64 = audio
+    # Decodifica Base64 in bytes
+    audio_bytes = base64.b64decode(audio_b64)
+
+    # Leggi il WAV dai bytes e riproduci
+    with sf.SoundFile(io.BytesIO(audio_bytes)) as f:
+        data = f.read(dtype="float32", always_2d=False)
+        sr = f.samplerate
+    sd.stop()
+    sd.play(data, sr)
+    sd.wait()
 
 event_emitter.on(event_emitter.WORD_DETECTED, on_wake_word_detected)
