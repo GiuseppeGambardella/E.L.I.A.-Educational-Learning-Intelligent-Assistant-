@@ -23,3 +23,4 @@ class Config:
     GEMMA_API_URL = os.getenv("GEMMA_API_URL")
     GEMMA_API_KEY = os.getenv("GEMMA_API_KEY")
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+    TTS_VOICE = os.getenv("TTS_VOICE", "it-IT-DiegoNeural")
