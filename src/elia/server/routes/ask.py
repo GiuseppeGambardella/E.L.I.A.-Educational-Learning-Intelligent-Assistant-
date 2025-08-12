@@ -4,13 +4,10 @@ import tempfile, os, logging, base64
 from elia.server.services.asr import transcribe_wav
 from elia.config import Config
 from elia.server.models.llm import ask_llm
-from elia.server.models import intent_recognition
 from elia.server.services.TTS import tts_create
 
 bp = Blueprint("ask", __name__)
 logger = logging.getLogger(__name__)
-
-voice = Config.TTS_VOICE
 
 INCLUDE_THRESHOLD = 20
 
@@ -37,7 +34,6 @@ def ask_endpoint():
     response = {}
     status_code = 200
     in_tmp_path = None
-    tts_tmp_path = None
 
     try:
         if "audio" not in request.files:
@@ -49,8 +45,9 @@ def ask_endpoint():
                 response = {"success": False, "error": "nome file vuoto"}
                 status_code = 400
             else:
-                in_tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
-                in_tmp_path = in_tmp.name
+                tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+                in_tmp_path = tmp.name
+                tmp.close()
                 f.save(in_tmp_path)
 
                 res = transcribe_wav(in_tmp_path)
@@ -61,23 +58,18 @@ def ask_endpoint():
                     llm_text = ask_llm(CONTEXT_PROMPT, CLARIFY_PROMPT)
                     status = "clarify"
                 else:
-                    #top3_res = intent_recognition.get_top_three_intents(text)
-                    #top3_intents = top3_res[0] if isinstance(top3_res, tuple) else top3_res
-                    #tags = [it["label"] for it in top3_intents if it.get("score", 0) * 100 >= INCLUDE_THRESHOLD]
-                    tags=[]
-                    normal_prompt = ((" ".join(tags) + " " + text).strip() if tags else text)
+                    normal_prompt = text
                     llm_text = ask_llm(CONTEXT_PROMPT, normal_prompt)
-                    llm_text = llm_text.replace("**", "")
                     status = "ok"
 
-                audio_file, _ = tts_create(llm_text)  # usa Config.TTS_VOICE, sintetizza, riproduce e pulisce
+                audio_bytes, _ = tts_create(llm_text)
 
                 response = {
                     "success": True,
                     "status": status,
                     "message": llm_text,
                     "confidence": confidence,
-                    "audio": base64.b64encode(audio_file).decode("utf-8")
+                    "audio": base64.b64encode(audio_bytes).decode("utf-8"),
                 }
     except Exception as e:
         logger.exception("Errore in /ask")
@@ -89,9 +81,5 @@ def ask_endpoint():
                 os.remove(in_tmp_path)
             except OSError:
                 pass
-        if tts_tmp_path and os.path.exists(tts_tmp_path):
-            try:
-                os.remove(tts_tmp_path)
-            except OSError:
-                pass
+
     return jsonify(response), status_code
