@@ -33,7 +33,7 @@ def load_dataset(path):
             text = row["text"]
             cats = {lab: 0.0 for lab in labels}
             for k, v in row.get("cats", {}).items():
-                if k not in labels:
+                if k not in labels_set:
                     raise ValueError(f"Label non ammessa nel set {split_name}: {k}. Valide: {labels}")
                 cats[k] = float(v)
             items.append((text, cats))
