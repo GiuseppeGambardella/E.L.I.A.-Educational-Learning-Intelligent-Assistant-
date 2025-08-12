@@ -1,5 +1,3 @@
-import requests
-import io
 from elia.client.EventEmitter import EventEmitter
 from elia.client.recorder import record_until_silence
 from elia.config import Config
@@ -17,16 +15,15 @@ def on_wake_word_detected(**kwargs):
         result = send_audio_and_get_result(wav_bytes)
 
         if not result.get("success"):
-            print("❌ Errore nella trascrizione:", result.get("error", "motivo sconosciuto"))
+            print("❌ Errore nella ricezione della risposta:", result.get("error", "motivo sconosciuto"))
             return
 
         status = result.get("status", "ok")
-        confidence = result.get("confidence")
 
         if status == "ok":
-            print("✅ Trascrizione OK")
-            if confidence is not None:
-                print(f"   Confidenza: {confidence}")
+            print("✅ Risposta ricevuta")
+            message = result.get("message", "")
+            print(f"💬 {message}")
             return
 
         if status == "clarify":
