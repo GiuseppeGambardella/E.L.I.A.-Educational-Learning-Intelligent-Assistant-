@@ -87,7 +87,7 @@ def ask_endpoint():
                     tags = [it["label"] for it in top3_intents if it.get("score", 0) * 100 >= INCLUDE_THRESHOLD]
                     normal_prompt = ((" ".join(tags) + " " + text).strip() if tags else text)
 
-                    # Chiamata LLM (mantengo l'ordine dei parametri come nel tuo codice)
+                    # Chiamata LLM
                     ask_llm_result = ask_llm(CONTEXT_PROMPT, normal_prompt)
 
                     response = {
