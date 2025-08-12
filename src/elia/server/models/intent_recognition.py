@@ -187,7 +187,6 @@ def load_patterns(reload: bool = False):
         for p in raw:
             try:
                 matcher.add(p["label"], [p["pattern"]])
-            except Exception:
             except Exception as e:
                 logging.warning(f"[IntentRecognition] Failed to add pattern: label={p.get('label')}, pattern={p.get('pattern')}, error={e}")
 
@@ -210,8 +209,6 @@ def load_model_pipeline(reload: bool = False):
             except Exception:
                 _nlp_model = spacy.blank("it")
                 logging.warning("[IntentRecognition] Errore nel caricamento modello ML, fallback blank.")
-        else:
-            _nlp_model = spacy.blank("it")
             except FileNotFoundError as fnf_err:
                 _nlp_model = spacy.blank("it")
                 logging.error(f"[IntentRecognition] Modello ML non trovato in {MODEL_DIR}: {fnf_err}", exc_info=True)
