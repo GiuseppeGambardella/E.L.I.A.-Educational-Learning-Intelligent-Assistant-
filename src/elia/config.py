@@ -16,7 +16,7 @@ class Config:
     PICOVOICE_WORD = os.getenv("PICOVOICE_WORD")
     PICOVOICE_PARAMS = os.getenv("PICOVOICE_PARAMS")
     AUDIO_DEVICE_INDEX = int(os.getenv("AUDIO_DEVICE_INDEX", 0))
-    ENDPOINT_TRANSCRIBE = os.getenv("ENDPOINT_TRANSCRIBE", "http://localhost:5000/ask")
+    ENDPOINT_ASK = os.getenv("ENDPOINT_ASK", "http://localhost:5000/ask")
     WHISPER_MODEL = os.getenv("FWHISPER_MODEL", "small")
     ASR_CONF_THRESHOLD = float(os.getenv("ASR_CONF_THRESHOLD", 0.60))
     ASR_MIN_WORDS = int(os.getenv("ASR_MIN_WORDS", 3))
