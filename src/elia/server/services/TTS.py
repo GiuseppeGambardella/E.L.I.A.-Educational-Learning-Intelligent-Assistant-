@@ -63,7 +63,6 @@ def tts_create(text: str) -> Tuple[bytes, int]:
     voice: Optional[str] = getattr(Config, "TTS_VOICE", None)
     if not voice:
         raise ValueError("tts_say: Config.TTS_VOICE non è impostato.")
-  # essenziale/minimale; si può estendere in futuro
 
     # 1) Sintesi su file temporaneo
     tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
