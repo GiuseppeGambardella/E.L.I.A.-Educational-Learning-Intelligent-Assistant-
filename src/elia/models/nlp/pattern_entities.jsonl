@@ -46,7 +46,8 @@
 {"label":"ask_steps","pattern":[{"LEMMA":{"IN":["ordine","sequenza"]}},{"LEMMA":{"IN":["passo","passaggio","fase"]},"OP":"+"}]}
 {"label":"ask_steps","pattern":[{"LEMMA":{"IN":["procedura","pipeline"]}}]}
 {"label":"ask_steps","pattern":"passo per passo"}
-{"label":"ask_steps","pattern":"step by step"}
+{"label":"ask_steps","pattern":[{"LOWER":"passo"},{"LOWER":"per"},{"LOWER":"passo"}]}
+{"label":"ask_steps","pattern":[{"LOWER":"step"},{"LOWER":"by"},{"LOWER":"step"}]}
 
 {"label":"ask_compare","pattern":[{"LEMMA":{"IN":["confrontare","paragonare","differire"]}}]}
 {"label":"ask_compare","pattern":[{"LEMMA":"mettere"},{"LOWER":"a"},{"LEMMA":"confrontare"}]}
