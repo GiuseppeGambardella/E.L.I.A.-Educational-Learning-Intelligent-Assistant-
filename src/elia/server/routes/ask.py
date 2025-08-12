@@ -94,5 +94,4 @@ def ask_endpoint():
                 os.remove(tts_tmp_path)
             except OSError:
                 pass
-
     return jsonify(response), status_code
