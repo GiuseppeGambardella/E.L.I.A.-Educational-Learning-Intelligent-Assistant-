@@ -25,7 +25,7 @@ def load_dataset(path):
     """
     with open(path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
-    labels = list(data.get("labels", []))
+    labels = list(data.get("labels") or [])
     def _read(split_name):
         rows = data.get(split_name, []) or []
         items = []
