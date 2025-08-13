@@ -62,7 +62,7 @@ def ask_endpoint():
                     llm_text = ask_llm(CONTEXT_PROMPT, normal_prompt)
                     status = "ok"
 
-                audio_bytes, _ = tts_create(llm_text)
+                audio_bytes, _ = tts_create(llm_text or "Non sono riuscito a capire la domanda, per favore ripeti.")
 
                 response = {
                     "success": True,

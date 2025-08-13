@@ -9,7 +9,7 @@ KEYWORD_PATH = Config.PICOVOICE_WORD  # .ppn della keyword "Ehi Elia"
 
 if not ACCESS_KEY:
     raise RuntimeError("PICOVOICE_KEY mancante nel .env")
-if not os.path.isfile(KEYWORD_PATH):
+if not KEYWORD_PATH or not os.path.isfile(KEYWORD_PATH):
     raise FileNotFoundError(f"Keyword non trovata: {KEYWORD_PATH}")
 
 porcupine = pvporcupine.create(
