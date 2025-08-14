@@ -58,7 +58,12 @@ def ask_endpoint():
                     llm_text = ask_llm(CONTEXT_PROMPT, CLARIFY_PROMPT)
                     status = "clarify"
                 else:
-                    normal_prompt = text
+                    #Parte di intent recognition disabilitata
+                    #top3_res = intent_recognition.get_top_three_intents(text)
+                    #top3_intents = top3_res[0] if isinstance(top3_res, tuple) else top3_res
+                    #tags = [it["label"] for it in top3_intents if it.get("score", 0) * 100 >= INCLUDE_THRESHOLD]
+                    tags=[]
+                    normal_prompt = ((" ".join(tags) + " " + text).strip() if tags else text)
                     llm_text = ask_llm(CONTEXT_PROMPT, normal_prompt)
                     status = "ok"
 
