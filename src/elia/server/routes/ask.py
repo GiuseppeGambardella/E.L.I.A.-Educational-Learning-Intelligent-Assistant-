@@ -121,7 +121,7 @@ def ask_endpoint():
             # ========================
             # 7. Salvataggio asincrono in memoria
             # ========================
-            if(similar_qas[0]["similarità"] < 1):
+            if similar_qas and (similar_qas[0]["similarità"] < 1):
                 executor.submit(add_qa, text, llm_text)
                 logger.info("Avviato salvataggio QA in memoria (thread separato).")
 
