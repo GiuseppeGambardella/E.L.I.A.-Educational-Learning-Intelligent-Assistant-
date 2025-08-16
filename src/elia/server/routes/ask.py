@@ -1,19 +1,25 @@
 from flask import Blueprint, request, jsonify
 import tempfile, os, logging, base64
+from concurrent.futures import ThreadPoolExecutor
 
 from elia.server.services.asr import transcribe_wav
 from elia.config import Config
 from elia.server.models.llm import ask_llm
 from elia.server.services.TTS import tts_create
 from elia.server.services.sentiment_analysis import SentimentAnalyzer
+from elia.server.memory.memory import search as chroma_search
+from elia.server.memory.memory import add_qa
 
 bp = Blueprint("ask", __name__)
 logger = logging.getLogger(__name__)
 
-INCLUDE_THRESHOLD = 20
+executor = ThreadPoolExecutor(max_workers=2)
+
+# INCLUDE_THRESHOLD = 20 # sensibilità della classificazione degli intenti, disabilitato
+SIMILARITY_THRESHOLD = 0.7  # sensibilità della similarità
 
 CLARIFY_PROMPT = (
-    "Scrivi una sola frase, educata e concisa (MAX 15 PAROLE), che chieda di ripetere la domanda.\n"
+    "Scrivi una sola frase, educata e concisa (MAX 15 PAROLE), che chieda di ripetere cosa è stato detto.\n"
     "Non aggiungere altro.\n"
     "Devi essere il piu sintetico possibile.\n"
 )
@@ -42,68 +48,99 @@ def ask_endpoint():
 
     try:
         if "audio" not in request.files:
-            response = {"success": False, "error": "manca il file 'audio'"}
-            status_code = 400
+            return jsonify({"success": False, "error": "manca il file 'audio'"}), 400
+
+        f = request.files["audio"]
+        if not f.filename:
+            return jsonify({"success": False, "error": "nome file vuoto"}), 400
+
+        # ========================
+        # 1. Salva file audio temporaneo
+        # ========================
+        tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+        in_tmp_path = tmp.name
+        tmp.close()
+        f.save(in_tmp_path)
+
+        # ========================
+        # 2. Trascrizione audio
+        # ========================
+        res = transcribe_wav(in_tmp_path)
+        text = res.get("text", "") or ""
+        confidence = res.get("confidence", None)
+
+        base_context = CONTEXT_PROMPT  
+
+        if confidence is not None and confidence < Config.ASR_CONF_THRESHOLD:
+            logger.info("LLM request: low ASR confidence, asking for clarification.")
+            llm_text = ask_llm(base_context, CLARIFY_PROMPT)
+            status = "clarify"
+            similar_qas = []
+            attitudine = {"sentiment": ""}
         else:
-            f = request.files["audio"]
-            if not f.filename:
-                response = {"success": False, "error": "nome file vuoto"}
-                status_code = 400
+            # ========================
+            # 3. Parallelizza sentiment + ricerca memoria
+            # ========================
+            sentiment_analyzer = SentimentAnalyzer()
+            future_sentiment = executor.submit(sentiment_analyzer.analyze, text)
+            future_chroma = executor.submit(chroma_search, text, 1)  # top_k=1
+
+            attitudine = future_sentiment.result()
+            similar_qas = future_chroma.result()
+
+            logger.info(f"Sentiment principale: {attitudine.get('sentiment', '')}")
+
+            # Controllo soglia similarità
+            if similar_qas and similar_qas[0]["similarità"] >= SIMILARITY_THRESHOLD:
+                logger.info(f"Memoria accettata (similarità {similar_qas[0]['similarità']})")
             else:
-                # Salva file audio temporaneo
-                tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
-                in_tmp_path = tmp.name
-                tmp.close()
-                f.save(in_tmp_path)
+                logger.info("Nessuna memoria rilevante trovata → contesto vuoto")
+                similar_qas = []
+            # ========================
+            # 4. Prepara prompt LLM
+            # ========================
+            memoria_context = ""
+            for qa in similar_qas:
+                memoria_context += f"\nDomanda passata: {qa['domanda_simile']} | Risposta: {qa['risposta_passata']}"
 
-                # Trascrizione audio
-                res = transcribe_wav(in_tmp_path)
-                text = res.get("text", "") or ""
-                confidence = res.get("confidence", None)
+            local_context = (
+                base_context
+                + "\nL'attitudine dello studente è: "
+                + attitudine.get("sentiment", "")
+                + ", rispondi di conseguenza."
+                + "\nMemoria passata utile (se rilevante):"
+                + memoria_context
+                + "\n Rispondi in maniera coerente con quello che hai detto prima."
+            )
 
-                # Copia del CONTEXT_PROMPT originale per non modificarlo globalmente
-                base_context = CONTEXT_PROMPT  
+            normal_prompt = text
+            logger.info("LLM request in corso...")
+            llm_text = ask_llm(local_context, normal_prompt)
+            status = "ok"
 
-                if confidence is not None and confidence < Config.ASR_CONF_THRESHOLD:
-                    logger.info("LLM request: low ASR confidence, asking for clarification.")
-                    llm_text = ask_llm(base_context, CLARIFY_PROMPT)
-                    status = "clarify"
-                else:
-                    # Parte di intent recognition disabilitata
-                    # top3_res = intent_recognition.get_top_three_intents(text)
-                    # top3_intents = top3_res[0] if isinstance(top3_res, tuple) else top3_res
-                    # tags = [it["label"] for it in top3_intents if it.get("score", 0) * 100 >= INCLUDE_THRESHOLD]
-                    tags = []
+            # ========================
+            # 7. Salvataggio asincrono in memoria
+            # ========================
+            if similar_qas and (similar_qas[0]["similarità"] < 1):
+                executor.submit(add_qa, text, llm_text)
+                logger.info("Avviato salvataggio QA in memoria (thread separato).")
 
-                    # Analisi del sentiment
-                    logger.info("Sentiment analysis in corso...")
-                    sentiment_analyzer = SentimentAnalyzer()
-                    attitudine = sentiment_analyzer.analyze(text)
-                    logger.info(f"Sentiment principale: {attitudine.get('sentiment', '')}")
+        # ========================
+        # 5. Pulizia + TTS
+        # ========================
+        llm_text = (llm_text or "").replace("*", "")
+        audio_bytes, _ = tts_create(llm_text or "Non sono riuscito a capire la domanda, per favore ripeti.")
 
-                    # Prepara il prompt per il LLM
-                    normal_prompt = ((" ".join(tags) + " " + text).strip() if tags else text)
-                    local_context = base_context + "\nL'attitudine dello studente è: " + attitudine.get("sentiment", "") + ", rispondi di conseguenza."
+        # ========================
+        # 6. Risposta finale
+        # ========================
+        response = {
+            "success": True,
+            "status": status,
+            "message": llm_text,
+            "audio": base64.b64encode(audio_bytes).decode("utf-8"),
+        }
 
-                    # Richiesta al LLM
-                    logger.info("LLM request in corso...")
-                    llm_text = ask_llm(local_context, normal_prompt)
-                    status = "ok"
-                
-                # Pulizia risposta LLM
-                llm_text = llm_text.replace("*", "")
-
-                # Sintesi vocale della risposta
-                audio_bytes, _ = tts_create(llm_text or "Non sono riuscito a capire la domanda, per favore ripeti.")
-
-                # Risposta finale JSON
-                response = {
-                    "success": True,
-                    "status": status,
-                    "message": llm_text,
-                    "confidence": confidence,
-                    "audio": base64.b64encode(audio_bytes).decode("utf-8"),
-                }
     except Exception as e:
         logger.exception("Errore in /ask")
         response = {"success": False, "error": str(e)}
