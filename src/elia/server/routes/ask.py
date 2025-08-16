@@ -118,13 +118,11 @@ def ask_endpoint():
             llm_text = ask_llm(local_context, normal_prompt)
             status = "ok"
 
-            # ========================
-            # 7. Salvataggio asincrono in memoria
-            # ========================
-            if similar_qas and (similar_qas[0]["similarità"] < 1):
+            if not similar_qas or similar_qas[0]["similarità"] < 1:
                 executor.submit(add_qa, text, llm_text)
                 logger.info("Avviato salvataggio QA in memoria (thread separato).")
-
+            else:
+                logger.info("QA già presente in memoria (similarità=1) → non salvata.")
         # ========================
         # 5. Pulizia + TTS
         # ========================
