@@ -212,6 +212,8 @@ src/elia/server/models/**/best/
 src/elia/server/models/**/model-best/
 src/elia/server/models/**/model-last/
 
+src/elia/server/memory/chroma_db
+
 # File binari pesanti comuni
 *.spacy
 *.bin
