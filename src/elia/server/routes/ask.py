@@ -1,3 +1,4 @@
+import time
 from flask import Blueprint, request, jsonify
 import tempfile, os, logging, base64
 from concurrent.futures import ThreadPoolExecutor
@@ -19,7 +20,7 @@ executor = ThreadPoolExecutor(max_workers=2)
 SIMILARITY_THRESHOLD = 0.7  # sensibilità della similarità
 
 CLARIFY_PROMPT = (
-    "Scrivi una sola frase, educata e concisa (MAX 15 PAROLE), che chieda di ripetere cosa è stato detto.\n"
+    "Comportati come se non avessi capito. Scrivi una sola frase, educata e concisa (MAX 15 PAROLE), che chieda di ripetere.\n"
     "Non aggiungere altro.\n"
     "Devi essere il piu sintetico possibile.\n"
 )
@@ -127,7 +128,12 @@ def ask_endpoint():
         # 5. Pulizia + TTS
         # ========================
         llm_text = (llm_text or "").replace("*", "")
+        start_time = time.perf_counter()
         audio_bytes, _ = tts_create(llm_text or "Non sono riuscito a capire la domanda, per favore ripeti.")
+        end_time = time.perf_counter()
+
+        elapsed = end_time - start_time
+        logger.info("TTS completato in %.3f secondi", elapsed)
 
         # ========================
         # 6. Risposta finale
