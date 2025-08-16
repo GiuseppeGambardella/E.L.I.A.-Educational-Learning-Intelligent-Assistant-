@@ -15,6 +15,7 @@ bp = Blueprint("ask", __name__)
 logger = logging.getLogger(__name__)
 
 executor = ThreadPoolExecutor(max_workers=2)
+sentiment_analyzer = SentimentAnalyzer()
 
 # INCLUDE_THRESHOLD = 20 # sensibilità della classificazione degli intenti, disabilitato
 SIMILARITY_THRESHOLD = 0.7  # sensibilità della similarità
@@ -82,7 +83,6 @@ def ask_endpoint():
             # ========================
             # 3. Parallelizza sentiment + ricerca memoria
             # ========================
-            sentiment_analyzer = SentimentAnalyzer()
             future_sentiment = executor.submit(sentiment_analyzer.analyze, text)
             future_chroma = executor.submit(chroma_search, text, 1)  # top_k=1
 
