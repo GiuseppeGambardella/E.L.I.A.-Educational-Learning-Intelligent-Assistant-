@@ -24,3 +24,4 @@ class Config:
     GEMMA_API_KEY = os.getenv("GEMMA_API_KEY")
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
     TTS_VOICE = os.getenv("TTS_VOICE", "it-IT-DiegoNeural")
+    ENDPOINT_ATTENTION = os.getenv("ENDPOINT_ATTENTION", "http://localhost:5000/attention")
