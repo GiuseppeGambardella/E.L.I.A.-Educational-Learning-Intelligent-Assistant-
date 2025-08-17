@@ -1,6 +1,9 @@
 import time
+import tempfile
+import os
+import logging
+import base64
 from flask import Blueprint, request, jsonify
-import tempfile, os, logging, base64
 from concurrent.futures import ThreadPoolExecutor
 
 from elia.server.services.asr import transcribe_wav
@@ -8,8 +11,7 @@ from elia.config import Config
 from elia.server.models.llm import ask_llm
 from elia.server.services.TTS import tts_create
 from elia.server.services.sentiment_analysis import SentimentAnalyzer
-from elia.server.memory.memory import search as chroma_search
-from elia.server.memory.memory import add_qa
+from elia.server.memory.memory import search as chroma_search, add_qa
 
 bp = Blueprint("ask", __name__)
 logger = logging.getLogger(__name__)
@@ -17,8 +19,7 @@ logger = logging.getLogger(__name__)
 executor = ThreadPoolExecutor(max_workers=2)
 sentiment_analyzer = SentimentAnalyzer()
 
-# INCLUDE_THRESHOLD = 20 # sensibilità della classificazione degli intenti, disabilitato
-SIMILARITY_THRESHOLD = 0.7  # sensibilità della similarità
+SIMILARITY_THRESHOLD = 0.7
 
 CLARIFY_PROMPT = (
     "Comportati come se non avessi capito. Scrivi una sola frase, educata e concisa (MAX 15 PAROLE), che chieda di ripetere.\n"
@@ -42,118 +43,127 @@ CONTEXT_PROMPT = (
     "Non devi usare caratteri volti ad evidenziare parole."
 )
 
+# ================================
+# Helper functions
+# ================================
+
+def save_temp_audio(file_storage) -> str:
+    """Salva il file audio temporaneamente e restituisce il path."""
+    tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+    path = tmp.name
+    tmp.close()
+    file_storage.save(path)
+    return path
+
+def cleanup_temp(path: str):
+    """Elimina il file temporaneo se esiste."""
+    if path and os.path.exists(path):
+        try:
+            os.remove(path)
+            logger.debug("File temporaneo %s eliminato", path)
+        except OSError:
+            logger.warning("Impossibile eliminare il file temporaneo %s", path)
+
+def analyze_context(text: str):
+    """Esegue sentiment analysis e ricerca memoria in parallelo."""
+    future_sentiment = executor.submit(sentiment_analyzer.analyze, text)
+    future_chroma = executor.submit(chroma_search, text, 1)
+
+    attitudine = future_sentiment.result()
+    similar_qas = future_chroma.result()
+
+    logger.info(f"Sentiment principale: {attitudine.get('sentiment', '')}")
+
+    if similar_qas and similar_qas[0]["similarità"] >= SIMILARITY_THRESHOLD:
+        logger.info(f"Memoria accettata (similarità {similar_qas[0]['similarità']})")
+    else:
+        logger.info("Nessuna memoria rilevante trovata → contesto vuoto")
+        similar_qas = []
+
+    return attitudine, similar_qas
+
+def build_context(base_context: str, attitudine: dict, similar_qas: list) -> str:
+    """Costruisce il contesto finale per l'LLM."""
+    memoria_context = ""
+    for qa in similar_qas:
+        memoria_context += f"\nDomanda passata: {qa['domanda_simile']} | Risposta: {qa['risposta_passata']}"
+
+    return (
+        base_context
+        + "\nL'attitudine dello studente è: "
+        + attitudine.get("sentiment", "")
+        + ", rispondi di conseguenza."
+        + "\nMemoria passata utile (se rilevante):"
+        + memoria_context
+        + "\n Rispondi in maniera coerente con quello che hai detto prima."
+    )
+
+def run_tts(text: str) -> str:
+    """Genera audio TTS e restituisce l'audio codificato in base64."""
+    text = (text or "").replace("*", "")
+    start = time.perf_counter()
+    audio_bytes, _ = tts_create(text or "Non sono riuscito a capire la domanda, per favore ripeti.")
+    elapsed = time.perf_counter() - start
+    logger.info("TTS completato in %.3f secondi", elapsed)
+    return base64.b64encode(audio_bytes).decode("utf-8")
+
+# ================================
+# Endpoint
+# ================================
+
 @bp.post("/ask")
 def ask_endpoint():
-    response = {}
-    status_code = 200
     in_tmp_path = None
-
     try:
+        # 1. Validazione input
         if "audio" not in request.files:
             return jsonify({"success": False, "error": "manca il file 'audio'"}), 400
-
         f = request.files["audio"]
         if not f.filename:
             return jsonify({"success": False, "error": "nome file vuoto"}), 400
 
-        # ========================
-        # 1. Salva file audio temporaneo
-        # ========================
-        tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
-        in_tmp_path = tmp.name
-        tmp.close()
-        f.save(in_tmp_path)
+        # 2. Salvataggio audio temporaneo
+        in_tmp_path = save_temp_audio(f)
 
-        # ========================
-        # 2. Trascrizione audio
-        # ========================
+        # 3. Trascrizione
         res = transcribe_wav(in_tmp_path)
         text = res.get("text", "") or ""
         confidence = res.get("confidence", None)
 
         base_context = CONTEXT_PROMPT  
 
+        # 4. Scelta: chiarificazione o normale
         if confidence is not None and confidence < Config.ASR_CONF_THRESHOLD:
-            logger.info("LLM request: low ASR confidence, asking for clarification.")
+            logger.info("Confidenza bassa → richiesta chiarimento")
             llm_text = ask_llm(base_context, CLARIFY_PROMPT)
             status = "clarify"
-            similar_qas = []
-            attitudine = {"sentiment": ""}
         else:
-            # ========================
-            # 3. Parallelizza sentiment + ricerca memoria
-            # ========================
-            future_sentiment = executor.submit(sentiment_analyzer.analyze, text)
-            future_chroma = executor.submit(chroma_search, text, 1)  # top_k=1
-
-            attitudine = future_sentiment.result()
-            similar_qas = future_chroma.result()
-
-            logger.info(f"Sentiment principale: {attitudine.get('sentiment', '')}")
-
-            # Controllo soglia similarità
-            if similar_qas and similar_qas[0]["similarità"] >= SIMILARITY_THRESHOLD:
-                logger.info(f"Memoria accettata (similarità {similar_qas[0]['similarità']})")
-            else:
-                logger.info("Nessuna memoria rilevante trovata → contesto vuoto")
-                similar_qas = []
-            # ========================
-            # 4. Prepara prompt LLM
-            # ========================
-            memoria_context = ""
-            for qa in similar_qas:
-                memoria_context += f"\nDomanda passata: {qa['domanda_simile']} | Risposta: {qa['risposta_passata']}"
-
-            local_context = (
-                base_context
-                + "\nL'attitudine dello studente è: "
-                + attitudine.get("sentiment", "")
-                + ", rispondi di conseguenza."
-                + "\nMemoria passata utile (se rilevante):"
-                + memoria_context
-                + "\n Rispondi in maniera coerente con quello che hai detto prima."
-            )
-
-            normal_prompt = text
-            logger.info("LLM request in corso...")
-            llm_text = ask_llm(local_context, normal_prompt)
+            attitudine, similar_qas = analyze_context(text)
+            local_context = build_context(base_context, attitudine, similar_qas)
+            logger.info("Richiesta LLM in corso...")
+            llm_text = ask_llm(local_context, text)
             status = "ok"
 
+            # Salvataggio in memoria se necessario
             if not similar_qas or similar_qas[0]["similarità"] < 1:
                 executor.submit(add_qa, text, llm_text)
-                logger.info("Avviato salvataggio QA in memoria (thread separato).")
+                logger.info("Avviato salvataggio QA in memoria")
             else:
                 logger.info("QA già presente in memoria (similarità=1) → non salvata.")
-        # ========================
-        # 5. Pulizia + TTS
-        # ========================
-        llm_text = (llm_text or "").replace("*", "")
-        start_time = time.perf_counter()
-        audio_bytes, _ = tts_create(llm_text or "Non sono riuscito a capire la domanda, per favore ripeti.")
-        end_time = time.perf_counter()
 
-        elapsed = end_time - start_time
-        logger.info("TTS completato in %.3f secondi", elapsed)
+        # 5. TTS
+        audio_b64 = run_tts(llm_text)
 
-        # ========================
         # 6. Risposta finale
-        # ========================
-        response = {
+        return jsonify({
             "success": True,
             "status": status,
             "message": llm_text,
-            "audio": base64.b64encode(audio_bytes).decode("utf-8"),
-        }
+            "audio": audio_b64,
+        }), 200
 
     except Exception as e:
         logger.exception("Errore in /ask")
-        response = {"success": False, "error": str(e)}
-        status_code = 500
+        return jsonify({"success": False, "error": str(e)}), 500
     finally:
-        if in_tmp_path and os.path.exists(in_tmp_path):
-            try:
-                os.remove(in_tmp_path)
-            except OSError:
-                pass
-
-    return jsonify(response), status_code
+        cleanup_temp(in_tmp_path)
