@@ -1,7 +1,7 @@
 # E.L.I.A. – Educational Learning Intelligent Assistant
 
 Un assistente vocale educativo in italiano, con riconoscimento del *wake word*, trascrizione (ASR), generazione di risposte via LLM e sintesi vocale (TTS) usando **Edge TTS**.  
-Questo progetto nasce come parte di un **tirocinio e tesi universitaria** presso l' **Università degli Studi di Salerno**.
+Questo progetto nasce come parte di un **tirocinio e tesi universitaria** presso l'**Università degli Studi di Salerno**.
 
 ---
 
