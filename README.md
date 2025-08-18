@@ -44,6 +44,7 @@ conda env config vars set PYTHONPATH=src
 conda deactivate
 conda activate elia-env
 
+# Spostarsi in src/
 # Copia e personalizza il file .env
 cp .env.example .env
 # Modifica .env con le tue credenziali
