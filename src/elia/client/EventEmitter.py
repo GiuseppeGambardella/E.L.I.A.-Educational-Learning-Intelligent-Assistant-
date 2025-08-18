@@ -16,13 +16,20 @@ class EventEmitter:
         self._events.setdefault(event, []).append(handler)
 
     def emit(self, event, *args, **kwargs):
-        """Esegue tutte le funzioni associate all'evento."""
+        """Esegue tutte le funzioni associate all'evento e ritorna i risultati."""
+        results = []
+
         # Scrivi nel log se richiesto
         if self._log_file:
             with open(self._log_file, "a", encoding="utf-8") as f:
                 ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 f.write(f"[{ts}] EVENT: {event} ARGS: {args} KWARGS: {kwargs}\n")
 
-        # Esegui tutti i gestori registrati
+        # Esegui tutti i gestori registrati e raccogli i risultati
         for handler in self._events.get(event, []):
-            handler(*args, **kwargs)
+            results.append(handler(*args, **kwargs))
+
+        # Se c’è un solo risultato, ritorna direttamente quello
+        if len(results) == 1:
+            return results[0]
+        return results

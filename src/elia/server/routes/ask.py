@@ -6,7 +6,7 @@ import base64
 from flask import Blueprint, request, jsonify
 from concurrent.futures import ThreadPoolExecutor
 
-from elia.server.services.asr import transcribe_wav
+from elia.server.services.asr import transcribe_bytes
 from elia.config import Config
 from elia.server.models.llm import ask_llm
 from elia.server.services.TTS import tts_create
@@ -16,32 +16,14 @@ from elia.server.memory.memory import search as chroma_search, add_qa
 bp = Blueprint("ask", __name__)
 logger = logging.getLogger(__name__)
 
-executor = ThreadPoolExecutor(max_workers=2)
+executor = ThreadPoolExecutor(max_workers=4)
 sentiment_analyzer = SentimentAnalyzer()
 
-SIMILARITY_THRESHOLD = 0.7
+SIMILARITY_THRESHOLD = Config.SIMILARITY_THRESHOLD
 
-CLARIFY_PROMPT = (
-    "Comportati come se non avessi capito. Scrivi una sola frase, educata e concisa (MAX 15 PAROLE), che chieda di ripetere.\n"
-    "Non aggiungere altro.\n"
-    "Devi essere il piu sintetico possibile.\n"
-)
+CLARIFY_PROMPT = Config.CLARIFY_PROMPT
 
-CONTEXT_PROMPT = (
-    "Sei un assistente virtuale di nome Elia (Educational Learning Intelligent Assistant) che aiuta gli studenti rispondendo alle loro domande.\n"
-    "Quando ti salutano, ricambia il saluto in modo semplice.\n"
-    "Non ricordare sempre che sei un assistente vocale volto all'educamento, ma rispondi solo quando ti viene espressamente chiesto.\n"
-    "Rispondi solo in italiano, mantenendo tutti gli accenti corretti.\n"
-    "Non usare emoji, solo testo puro.\n"
-    "Adotta sempre un tono empatico e di supporto, calibrando la risposta allo stato emotivo dello studente.\n"
-    "Rispetta il limite massimo di 120 parole.\n"
-    "Sciogli sempre gli acronimi (esempio: d.C. -> dopo Cristo).\n"
-    "Non inventare informazioni.\n"
-    "Se la domanda contiene errori o imprecisioni, correggili e segnala la correzione nella risposta.\n"
-    "Non attingere a dati esterni: usa solo le tue conoscenze interne e il contenuto della domanda.\n"
-    "Non devi mai mentire o fornire informazioni false.\n"
-    "Non devi usare caratteri volti ad evidenziare parole."
-)
+CONTEXT_PROMPT = Config.CONTEXT_PROMPT
 
 # ================================
 # Helper functions
@@ -122,11 +104,11 @@ def ask_endpoint():
         if not f.filename:
             return jsonify({"success": False, "error": "nome file vuoto"}), 400
 
-        # 2. Salvataggio audio temporaneo
-        in_tmp_path = save_temp_audio(f)
+        # 2. Leggo direttamente i byte
+        audio_bytes = f.read()
 
         # 3. Trascrizione
-        res = transcribe_wav(in_tmp_path)
+        res = transcribe_bytes(audio_bytes)
         text = res.get("text", "") or ""
         confidence = res.get("confidence", None)
 
@@ -137,24 +119,29 @@ def ask_endpoint():
             logger.info("Confidenza bassa → richiesta chiarimento")
             llm_text = ask_llm(base_context, CLARIFY_PROMPT)
             status = "clarify"
+
+            # Anche qui TTS in parallelo (solo TTS serve)
+            future_tts = executor.submit(run_tts, llm_text)
+            audio_b64 = future_tts.result()
+
         else:
+            # Sentiment + memoria già in parallelo
             attitudine, similar_qas = analyze_context(text)
             local_context = build_context(base_context, attitudine, similar_qas)
-            logger.info("Richiesta LLM in corso...")
+
+            # Chiamata LLM (bloccante, non parallelizzabile)
             llm_text = ask_llm(local_context, text)
             status = "ok"
 
-            # Salvataggio in memoria se necessario
+            # Lancia subito TTS e QA in parallelo
+            future_tts = executor.submit(run_tts, llm_text)
             if not similar_qas or similar_qas[0]["similarità"] < 1:
                 executor.submit(add_qa, text, llm_text)
-                logger.info("Avviato salvataggio QA in memoria")
-            else:
-                logger.info("QA già presente in memoria (similarità=1) → non salvata.")
 
-        # 5. TTS
-        audio_b64 = run_tts(llm_text)
+            # Aspetta solo il TTS (QA continua in background)
+            audio_b64 = future_tts.result()
 
-        # 6. Risposta finale
+        # 5. Risposta finale
         return jsonify({
             "success": True,
             "status": status,
@@ -165,5 +152,3 @@ def ask_endpoint():
     except Exception as e:
         logger.exception("Errore in /ask")
         return jsonify({"success": False, "error": str(e)}), 500
-    finally:
-        cleanup_temp(in_tmp_path)
