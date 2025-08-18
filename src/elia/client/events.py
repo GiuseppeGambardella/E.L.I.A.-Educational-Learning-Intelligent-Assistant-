@@ -42,6 +42,11 @@ def on_wake_word_detected(**kwargs):
     while True:
         try:
             wav_bytes = record_until_silence()
+
+            # Se arriva una tupla (bytes, sr), prendi solo i bytes
+            if isinstance(wav_bytes, tuple):
+                wav_bytes = wav_bytes[0]
+
             logger.info("🎙️ Registrazione completata, invio al server per trascrizione...")
             t0 = time.perf_counter()
             result = send_audio_and_get_result(wav_bytes)
