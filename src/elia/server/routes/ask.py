@@ -6,7 +6,7 @@ import base64
 from flask import Blueprint, request, jsonify
 from concurrent.futures import ThreadPoolExecutor
 
-from elia.server.services.asr import transcribe_wav
+from elia.server.services.asr import transcribe_bytes
 from elia.config import Config
 from elia.server.models.llm import ask_llm
 from elia.server.services.TTS import tts_create
@@ -16,7 +16,7 @@ from elia.server.memory.memory import search as chroma_search, add_qa
 bp = Blueprint("ask", __name__)
 logger = logging.getLogger(__name__)
 
-executor = ThreadPoolExecutor(max_workers=2)
+executor = ThreadPoolExecutor(max_workers=4)
 sentiment_analyzer = SentimentAnalyzer()
 
 SIMILARITY_THRESHOLD = Config.SIMILARITY_THRESHOLD
@@ -104,11 +104,11 @@ def ask_endpoint():
         if not f.filename:
             return jsonify({"success": False, "error": "nome file vuoto"}), 400
 
-        # 2. Salvataggio audio temporaneo
-        in_tmp_path = save_temp_audio(f)
+        # 2. Leggo direttamente i byte
+        audio_bytes = f.read()
 
         # 3. Trascrizione
-        res = transcribe_wav(in_tmp_path)
+        res = transcribe_bytes(audio_bytes)
         text = res.get("text", "") or ""
         confidence = res.get("confidence", None)
 
@@ -119,23 +119,29 @@ def ask_endpoint():
             logger.info("Confidenza bassa → richiesta chiarimento")
             llm_text = ask_llm(base_context, CLARIFY_PROMPT)
             status = "clarify"
+
+            # Anche qui TTS in parallelo (solo TTS serve)
+            future_tts = executor.submit(run_tts, llm_text)
+            audio_b64 = future_tts.result()
+
         else:
+            # Sentiment + memoria già in parallelo
             attitudine, similar_qas = analyze_context(text)
             local_context = build_context(base_context, attitudine, similar_qas)
+
+            # Chiamata LLM (bloccante, non parallelizzabile)
             llm_text = ask_llm(local_context, text)
             status = "ok"
 
-            # Salvataggio in memoria se necessario
+            # Lancia subito TTS e QA in parallelo
+            future_tts = executor.submit(run_tts, llm_text)
             if not similar_qas or similar_qas[0]["similarità"] < 1:
                 executor.submit(add_qa, text, llm_text)
-                logger.info("Avviato salvataggio QA in memoria")
-            else:
-                logger.info("QA già presente in memoria (similarità=1) → non salvata.")
 
-        # 5. TTS
-        audio_b64 = run_tts(llm_text)
+            # Aspetta solo il TTS (QA continua in background)
+            audio_b64 = future_tts.result()
 
-        # 6. Risposta finale
+        # 5. Risposta finale
         return jsonify({
             "success": True,
             "status": status,
@@ -146,5 +152,3 @@ def ask_endpoint():
     except Exception as e:
         logger.exception("Errore in /ask")
         return jsonify({"success": False, "error": str(e)}), 500
-    finally:
-        cleanup_temp(in_tmp_path)
