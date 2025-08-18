@@ -1,18 +1,13 @@
 from flask import Blueprint, jsonify, request
 import logging
 from elia.server.models import llm
+from elia.config import Config
 
 bp = Blueprint("attention", __name__)
 logger = logging.getLogger(__name__)
 
 # Prompt costante per l'LLM
-ATTENTION_PROMPT = (
-    "Comportati come un professore. Lo studente si è distratto, "
-    "richiamalo all'attenzione senza essere invasivo. MASSIMO 15 PAROLE. "
-    "Non stai spiegando tu, stai soltanto controllando l'attenzione degli studenti, "
-    "devi solo richiamarli all'attenzione."
-)
-
+ATTENTION_PROMPT = Config.ATTENTION_PROMPT
 
 @bp.post("/attention")
 def attention_endpoint():
@@ -23,9 +18,6 @@ def attention_endpoint():
     logger.info("📥 Richiesta ricevuta su /attention")
 
     try:
-        # Tracciamo dettagli della richiesta
-        client_ip = request.remote_addr
-        logger.debug(f"Richiesta da IP: {client_ip}")
 
         # Invio del prompt all'LLM
         logger.debug("Invio del prompt all'LLM...")
