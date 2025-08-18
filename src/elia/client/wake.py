@@ -3,6 +3,7 @@ import pvporcupine
 from pvrecorder import PvRecorder
 from elia.config import Config
 from elia.client.events import event_emitter
+from elia.client.services.audio import play_audio
 
 ACCESS_KEY = Config.PICOVOICE_KEY
 KEYWORD_PATH = Config.PICOVOICE_WORD  # .ppn della keyword "Ehi Elia"
@@ -25,7 +26,19 @@ try:
     while True:
         pcm = rec.read()
         if porcupine.process(pcm) >= 0:
-            event_emitter.emit(event_emitter.WORD_DETECTED)
+            result = event_emitter.emit(event_emitter.WORD_DETECTED)
+            if result:
+                status = result.get("status")
+                if status == "ok":
+                    print(f"💬 {result.get('message')}")
+                    play_audio(result.get("audio"))
+                elif status == "clarify":
+                    print(f"💬 {result.get('message')}")
+                    play_audio(result.get("audio"))
+                    print("🔄 Chiarimento richiesto, sto registrando...")
+                    continue
+                else:
+                    print("⚠️ Errore:", result.get("error"))
 except KeyboardInterrupt:
     pass
 finally:
