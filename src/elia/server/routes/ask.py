@@ -19,29 +19,11 @@ logger = logging.getLogger(__name__)
 executor = ThreadPoolExecutor(max_workers=2)
 sentiment_analyzer = SentimentAnalyzer()
 
-SIMILARITY_THRESHOLD = 0.7
+SIMILARITY_THRESHOLD = Config.SIMILARITY_THRESHOLD
 
-CLARIFY_PROMPT = (
-    "Comportati come se non avessi capito. Scrivi una sola frase, educata e concisa (MAX 15 PAROLE), che chieda di ripetere.\n"
-    "Non aggiungere altro.\n"
-    "Devi essere il piu sintetico possibile.\n"
-)
+CLARIFY_PROMPT = Config.CLARIFY_PROMPT
 
-CONTEXT_PROMPT = (
-    "Sei un assistente virtuale di nome Elia (Educational Learning Intelligent Assistant) che aiuta gli studenti rispondendo alle loro domande.\n"
-    "Quando ti salutano, ricambia il saluto in modo semplice.\n"
-    "Non ricordare sempre che sei un assistente vocale volto all'educamento, ma rispondi solo quando ti viene espressamente chiesto.\n"
-    "Rispondi solo in italiano, mantenendo tutti gli accenti corretti.\n"
-    "Non usare emoji, solo testo puro.\n"
-    "Adotta sempre un tono empatico e di supporto, calibrando la risposta allo stato emotivo dello studente.\n"
-    "Rispetta il limite massimo di 120 parole.\n"
-    "Sciogli sempre gli acronimi (esempio: d.C. -> dopo Cristo).\n"
-    "Non inventare informazioni.\n"
-    "Se la domanda contiene errori o imprecisioni, correggili e segnala la correzione nella risposta.\n"
-    "Non attingere a dati esterni: usa solo le tue conoscenze interne e il contenuto della domanda.\n"
-    "Non devi mai mentire o fornire informazioni false.\n"
-    "Non devi usare caratteri volti ad evidenziare parole."
-)
+CONTEXT_PROMPT = Config.CONTEXT_PROMPT
 
 # ================================
 # Helper functions
@@ -140,7 +122,6 @@ def ask_endpoint():
         else:
             attitudine, similar_qas = analyze_context(text)
             local_context = build_context(base_context, attitudine, similar_qas)
-            logger.info("Richiesta LLM in corso...")
             llm_text = ask_llm(local_context, text)
             status = "ok"
 
