@@ -102,7 +102,5 @@ python src/elia/client/report.py
 ```
 Per ogni domanda dello studente viene generato un mini-report emotivo che descrive lo stato d’animo associato (es. confusione, curiosità, sollievo).
 
-Alla fine, il sistema integra le domande con i relativi mini-report e produce un report finale completo, senza rifare la sentiment analysis, evidenziando i pattern emotivi ricorrenti e 
-
-fornendo raccomandazioni educative.
+Alla fine, il sistema integra le domande con i relativi mini-report e produce un report finale completo, senza rifare la sentiment analysis, evidenziando i pattern emotivi ricorrenti e fornendo raccomandazioni educative.
 
