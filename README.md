@@ -93,6 +93,11 @@ Genera un messaggio breve e conciso (max 15 parole).
 
 Serve a simulare il richiamo all’attenzione di uno studente distratto.
 
+### 5. Test Report Emotivi
 
+Per testare il sistema di analisi emotiva dello studente:
 
+```bash
+python src/elia/client/report.py
+```
 
