@@ -25,6 +25,10 @@ CLARIFY_PROMPT = Config.CLARIFY_PROMPT
 
 CONTEXT_PROMPT = Config.CONTEXT_PROMPT
 
+EMOTION_PROMPT = Config.EMOTION_PROMPT
+
+TOP_DOMANDE = 1
+
 # ================================
 # Helper functions
 # ================================
@@ -48,13 +52,16 @@ def cleanup_temp(path: str):
 
 def analyze_context(text: str):
     """Esegue sentiment analysis e ricerca memoria in parallelo."""
-    future_sentiment = executor.submit(sentiment_analyzer.analyze, text)
-    future_chroma = executor.submit(chroma_search, text, 1)
+    # future_sentiment = executor.submit(sentiment_analyzer.analyze, text)
+    future_sentiment = executor.submit(ask_llm, EMOTION_PROMPT + text, "")
+    future_chroma = executor.submit(chroma_search, text, TOP_DOMANDE)
 
-    attitudine = future_sentiment.result()
+    # attitudine = future_sentiment.result()
+    sentimento = future_sentiment.result()
     similar_qas = future_chroma.result()
 
-    logger.info(f"Sentiment principale: {attitudine.get('sentiment', '')}")
+    #logger.info(f"Sentiment principale: {attitudine.get('sentiment', '')}")
+    logger.info(f"Sentiment principale: {sentimento}")
 
     if similar_qas and similar_qas[0]["similarità"] >= SIMILARITY_THRESHOLD:
         logger.info(f"Memoria accettata (similarità {similar_qas[0]['similarità']})")
@@ -62,9 +69,9 @@ def analyze_context(text: str):
         logger.info("Nessuna memoria rilevante trovata → contesto vuoto")
         similar_qas = []
 
-    return attitudine, similar_qas
+    return sentimento, similar_qas
 
-def build_context(base_context: str, attitudine: dict, similar_qas: list) -> str:
+def build_context(base_context: str, sentiment: dict, similar_qas: list) -> str:
     """Costruisce il contesto finale per l'LLM."""
     memoria_context = ""
     for qa in similar_qas:
@@ -72,8 +79,9 @@ def build_context(base_context: str, attitudine: dict, similar_qas: list) -> str
 
     return (
         base_context
-        + "\nL'attitudine dello studente è: "
-        + attitudine.get("sentiment", "")
+        + "\nIl sentiment dello studente è: "
+        + #attitudine.get("sentiment", "")
+        sentiment
         + ", rispondi di conseguenza."
         + "\nMemoria passata utile (se rilevante):"
         + memoria_context
@@ -95,7 +103,6 @@ def run_tts(text: str) -> str:
 
 @bp.post("/ask")
 def ask_endpoint():
-    in_tmp_path = None
     try:
         # 1. Validazione input
         if "audio" not in request.files:
@@ -126,8 +133,8 @@ def ask_endpoint():
 
         else:
             # Sentiment + memoria già in parallelo
-            attitudine, similar_qas = analyze_context(text)
-            local_context = build_context(base_context, attitudine, similar_qas)
+            sentiment, similar_qas = analyze_context(text)
+            local_context = build_context(base_context, sentiment, similar_qas)
 
             # Chiamata LLM (bloccante, non parallelizzabile)
             llm_text = ask_llm(local_context, text)
@@ -136,7 +143,7 @@ def ask_endpoint():
             # Lancia subito TTS e QA in parallelo
             future_tts = executor.submit(run_tts, llm_text)
             if not similar_qas or similar_qas[0]["similarità"] < 1:
-                executor.submit(add_qa, text, llm_text)
+                executor.submit(add_qa, text, llm_text, sentiment)
 
             # Aspetta solo il TTS (QA continua in background)
             audio_b64 = future_tts.result()
