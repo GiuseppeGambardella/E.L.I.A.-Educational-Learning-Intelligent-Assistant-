@@ -5,6 +5,7 @@ import logging
 import base64
 from flask import Blueprint, request, jsonify
 from concurrent.futures import ThreadPoolExecutor
+from datetime import date
 
 from elia.server.services.asr import transcribe_bytes
 from elia.config import Config
@@ -25,7 +26,7 @@ CLARIFY_PROMPT = Config.CLARIFY_PROMPT
 
 CONTEXT_PROMPT = Config.CONTEXT_PROMPT
 
-EMOTION_PROMPT = Config.EMOTION_PROMPT
+EMOTION_PROMPT = Config.EMOTION_PROMPT + "\n La data di oggi è: " + str(date.today())
 
 TOP_DOMANDE = 1
 

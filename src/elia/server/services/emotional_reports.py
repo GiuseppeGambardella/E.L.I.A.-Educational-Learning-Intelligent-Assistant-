@@ -7,6 +7,7 @@ import logging
 from elia.server.memory.memory import get_all_emotional_data
 from elia.server.models.llm import ask_llm
 from elia.config import Config
+from datetime import date
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +67,8 @@ def generate_emotional_report():
 
             SAMPLE DELLE INTERAZIONI CON REPORT EMOTIVI:
             {chr(10).join(data_summary)}
+
+            Data di oggi: {date.today()}
             """
         
         logger.info("🤖 Invio prompt a LLM per generazione report...")
