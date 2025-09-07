@@ -14,3 +14,9 @@ def pay_attention() -> dict:
     r = requests.post(Config.ENDPOINT_ATTENTION, timeout=60)
     r.raise_for_status()
     return r.json()
+
+def get_report_full(timeout=60) -> dict:
+    """Richiama l'endpoint del report emotivo completo."""
+    r = requests.get(Config.ENDPOINT_REPORT_FULL, timeout=timeout)
+    r.raise_for_status()
+    return r.json()

@@ -5,6 +5,7 @@ class EventEmitter:
 
     WORD_DETECTED = "wake_word_detected"
     ATTENTION_CHECK = "attention_check"
+    REPORT_FULL = "report_full"
 
 
     def __init__(self, log_file="src/elia/client/events.log"):

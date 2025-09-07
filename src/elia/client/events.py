@@ -2,7 +2,7 @@ import time
 import logging
 from elia.client.EventEmitter import EventEmitter
 from elia.client.recorder import record_until_silence
-from elia.client.request_handler import send_audio_and_get_result, pay_attention
+from elia.client.request_handler import send_audio_and_get_result, pay_attention, get_report_full
 
 # Configurazione logging
 logging.basicConfig(
@@ -14,6 +14,20 @@ logger = logging.getLogger(__name__)
 # Istanza globale di EventEmitter
 event_emitter = EventEmitter()
 
+def on_report_full(**kwargs):
+    """Evento: genera il report emotivo completo"""
+    logger.info("📄 Richiesta report full")
+    try:
+        result = get_report_full()
+        if result.get("success"):
+            logger.info("✅ Report emotivo generato con successo")
+            return {"status": "ok", "report": result.get("report"), "statistics": result.get("statistics")}
+        else:
+            logger.warning("⚠️ Errore nella generazione del report emotivo")
+            return {"status": "error", "error": result.get("error", "motivo sconosciuto")}
+    except Exception as e:
+        logger.exception("❌ Eccezione in on_report_full")
+        return {"status": "error", "error": str(e)}
 
 def check_attention():
     """Richiama l'endpoint /attention e ritorna il messaggio generato."""
@@ -61,3 +75,4 @@ def on_wake_word_detected(**kwargs):
 # Bind degli eventi
 event_emitter.on(event_emitter.WORD_DETECTED, on_wake_word_detected)
 event_emitter.on(event_emitter.ATTENTION_CHECK, check_attention)
+event_emitter.on(event_emitter.REPORT_FULL, on_report_full)
