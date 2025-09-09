@@ -37,12 +37,12 @@ cd E.L.I.A.-Educational-Learning-Intelligent-Assistant-
 conda env create -f environment.yml
 
 # Attiva l’ambiente
-conda activate elia-env
+conda activate elia_env
 
 # Configura PYTHONPATH per permettere gli import del progetto
 conda env config vars set PYTHONPATH=src
 conda deactivate
-conda activate elia-env
+conda activate elia_env
 
 # Spostarsi in src/
 # Copia e personalizza il file .env
