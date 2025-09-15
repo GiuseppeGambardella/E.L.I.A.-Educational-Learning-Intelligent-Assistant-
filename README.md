@@ -60,7 +60,7 @@ Spostarsi in src/elia e avviare app.py
 ```bash
 python src/elia/app.py
 ```
-Questo comando avvia il backend con le API disponibili sugli endpoint locali (`/ask`, `/attention`):
+Questo comando avvia il backend con le API disponibili sugli endpoint locali (`/ask`, `/attention`,`/emotional_report`):
 
 ### 3. Avviare il client con wake word
 
